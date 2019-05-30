@@ -1,8 +1,8 @@
 {
     "User": [
         {
-            "Login": "user",
-            "Password": "user"
+            "Login": "12345",
+            "Password": "12345"
         }
     ]
 }

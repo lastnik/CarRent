@@ -110,7 +110,7 @@ void Core::confirmDocs(std::vector<std::pair<QString, QString>> docs)
     for(auto i : docs)
     {
         QFileInfo info(i.second);
-        QFile::copy(i.second,"C:/Qt/project/Server/msg/" + i.first + msg->login + "." + info.suffix());
+        QFile::copy(i.second, QString(PATH) + "/../Server/msg/" + i.first + msg->login + "." + info.suffix());
         msg->documents.push_back(std::make_pair(i.first, i.first + msg->login + "." + info.suffix()));
     }
     emit transmitMsg(msg);

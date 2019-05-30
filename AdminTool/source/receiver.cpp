@@ -5,8 +5,8 @@
 #include <QVariant>
 #include <QDir>
 #include <string>
-const char* wayReq = "C:/Qt/project/Server/req";
-extern const char* wayMsg;
+QString wayReq = QString(PATH) + "/../Server/req";
+extern QString wayMsg;
 IReq* FileReceiver::receive(QString reqName,  std::function<IReq*(QJsonDocument)>& fromJson)
 {
     QDir dir(wayReq);

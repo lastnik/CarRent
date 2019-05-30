@@ -4,8 +4,8 @@
 #include <QJsonObject>
 #include <QVariant>
 #include <QDateTime>
-const char* wayMsg = "C:/Qt/project/Server/msg";
-extern const char* wayReq;
+QString wayMsg = QString(PATH) + "/../Server/msg";
+extern QString wayReq;
 void FileTransmiter::transmit(IMsg* msg)
 {
     QFile letter(wayMsg + ("/" + msg->msgName + "Admin.json"));

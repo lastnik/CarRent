@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QVariant>
 
-const char* wayReq = "C:/Qt/project/Server/req";
+const QString wayReq = QString(PATH) + "/../Server/req";
 
 IReq* FileReceiver::receive(QString reqName,  std::function<IReq*(QJsonDocument)>& fromJson)
 {

@@ -8,7 +8,7 @@
 #include <QJsonObject>
 #include <QVariant>
 #include <QDebug>
-const char* wayData = "C:/Qt/project/Server/data";
+QString wayData = QString(PATH) + "/data";
 
 ServerNet::ServerNet(QObject *parent) : QObject(parent)
 {
@@ -316,8 +316,8 @@ void ServerNet::schedulerReq(RegistrationMsg* msg)
 {
     for(auto i : msg->documents)
     {
-        QFile::copy("C:/Qt/project/Server/msg/" + i.second, "C:/Qt/project/Server/data/pics/" + i.second);
-        QFile::remove("C:/Qt/project/Server/msg/" + i.second);
+        QFile::copy(QString(PATH) + "/msg/" + i.second, QString(PATH) + "/data/pics/" + i.second);
+        QFile::remove(QString(PATH) + "/msg/" + i.second);
     }
     QFile data(wayData + ("/" + QString("Access") + ".json"));
     if(data.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -427,7 +427,7 @@ void ServerNet::schedulerReq(RegistrationReq* req)
                     auto personOld = i.toObject().value("PersonalDocuments").toArray();
                     for(auto j : personOld)
                     {
-                        QFile::remove("C:/Qt/project/Server/data/pics/" + j.toObject().value("DocumentsFileName").toString());
+                        QFile::remove(QString(PATH) + "/data/pics/" + j.toObject().value("DocumentsFileName").toString());
                     }
                 }
                 correct.push_back(obj);

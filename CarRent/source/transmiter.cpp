@@ -3,7 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QVariant>
-const char* wayMsg = "C:/Qt/project/Server/msg";
+const QString wayMsg = QString(PATH) + "/../Server/msg";
 
 void FileTransmiter::transmit(IMsg* msg)
 {

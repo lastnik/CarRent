@@ -86,7 +86,7 @@ void Core::event(int index)
         emit clearDoc();
         for(auto i : msg->documents)
         {
-            emit addDoc(i.first, "C:/Qt/project/Server/data/pics/" + i.second);
+            emit addDoc(i.first, QString(SERVERPATH) + "/Server/data/pics/" + i.second);
         }
     }else
     {

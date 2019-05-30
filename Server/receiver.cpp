@@ -5,8 +5,8 @@
 #include <QVariant>
 #include <QDir>
 namespace  server {
-const char* wayMsg = "C:/Qt/project/Server/msg";
-extern const char* wayReq;
+QString wayMsg = QString(PATH) + "/msg";
+extern QString wayReq;
 IMsg* FileReceiver::receive(QString msgName, std::function<IMsg*(QJsonDocument)>& fromJson)
 {
     QFile letter(wayMsg + ("/" + msgName + ".json"));

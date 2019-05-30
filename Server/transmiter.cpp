@@ -7,8 +7,8 @@
 #include <QDateTime>
 namespace  server {
 
-const char* wayReq = "C:/Qt/project/Server/req";
-extern const char* wayMsg;
+QString wayReq = QString(PATH) + "/req";
+extern QString wayMsg;
 
 void FileTransmiter::transmit(IReq* req)
 {
