@@ -1,0 +1,23 @@
+{
+    "User": [
+        {
+            "CarNames": [
+            ],
+            "Login": "user",
+            "PersonalDocuments": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Passportuser.png",
+                    "DocumentsName": "Passport"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Driver Licenceuser.png",
+                    "DocumentsName": "Driver Licence"
+                }
+            ],
+            "confirmPerson": true,
+            "hasCars": false
+        }
+    ]
+}

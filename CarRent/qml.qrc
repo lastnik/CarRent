@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>LoginPage.qml</file>
+        <file>MyBusyIndicator.qml</file>
+    </qresource>
+    <qresource prefix="/pages">
+        <file>pages/ListPage.ui.qml</file>
+        <file>pages/Page1Form.qml</file>
+        <file>pages/Page2Form.ui.qml</file>
+        <file>pages/WaitingPage.qml</file>
+    </qresource>
+    <qresource prefix="/source">
+        <file>pics/leftArrow.png</file>
+        <file>pics/rightArrow.png</file>
+        <file>pics/highWay.png</file>
+        <file>pics/clip.png</file>
+        <file>pics/checkMark.png</file>
+    </qresource>
+    <qresource prefix="/cache">
+        <file>cache/login.json</file>
+    </qresource>
+</RCC>
