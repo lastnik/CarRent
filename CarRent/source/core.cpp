@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <QDate>
 Core::Core(QObject *parent) : QObject(parent)
 {
 
@@ -42,6 +43,11 @@ void Core::receiveReq(IReq* req)
     if(typeid (*req).name() == typeid (RegistrationReq).name())
     {
         scheduler(reinterpret_cast<RegistrationReq*>(req));
+        return;
+    }
+    if(typeid (*req).name() == typeid (RegistrationCarReq).name())
+    {
+        scheduler(reinterpret_cast<RegistrationCarReq*>(req));
         return;
     }
 }
@@ -110,6 +116,19 @@ void Core::scheduler(RegistrationReq* req)
     accessInfo();
 }
 
+void Core::scheduler(RegistrationCarReq* req)
+{
+    if(req->isCar)
+    {
+        root->findChild<QObject*>("successReg3")->setProperty("text", "Now you have access to car rent.");
+    }else
+    {
+        root->findChild<QObject*>("successReg3")->setProperty("text", "Sorry, you documents is incorrect.");
+    }
+    root->findChild<QObject*>("successReg")->setProperty("visible", true);
+    delete req;
+    accessInfo();
+}
 
 void Core::setRoot(QObject *_root)
 {
@@ -118,15 +137,76 @@ void Core::setRoot(QObject *_root)
 
 void Core::confirmDocs(std::vector<std::pair<QString, QString>> docs)
 {
-    RegistrationMsg* msg = new RegistrationMsg();
-    msg->login = login;
-    for(auto i : docs)
+    if(docs.size() == 2)
     {
-        QFileInfo info(i.second);
-        QFile::copy(i.second, QString(PATH) + "/../Server/msg/" + i.first + msg->login + "." + info.suffix());
-        msg->documents.push_back(std::make_pair(i.first, i.first + msg->login + "." + info.suffix()));
+        RegistrationMsg* msg = new RegistrationMsg();
+        msg->login = login;
+        for(auto i : docs)
+        {
+            QFileInfo info(i.second);
+            QFile::copy(i.second, QString(PATH) + "/../Server/msg/" + i.first + msg->login + "." + info.suffix());
+            msg->documents.push_back(std::make_pair(i.first, i.first + msg->login + "." + info.suffix()));
+        }
+        emit transmitMsg(msg);
+        emit waitingConfirm();
+        root->findChild<QObject*>("registrationPerson")->setProperty("visible",false);
+    }else
+    {
+        auto brend = root->findChild<QObject*>("lineCarBrend")->property("text").toString();
+        auto model = root->findChild<QObject*>("lineCarModel")->property("text").toString();
+        auto color = root->findChild<QObject*>("lineCarColor")->property("text").toString();
+        auto number= root->findChild<QObject*>("lineCarNumber")->property("text").toString();
+        auto year  = QDate().currentDate().year() - 100 + root->findChild<QObject*>("tumblerCarYear")->property("currentIndex").toInt();
+        bool _error = false;
+        if(brend.size() == 0)
+        {
+            emit error(0);
+            _error = true;
+        }
+
+        if(model.size() == 0)
+        {
+            emit error(1);
+            _error = true;
+        }
+
+        if(color.size() == 0)
+        {
+            emit error(2);
+            _error = true;
+        }
+
+        if(number.size() == 0)
+        {
+            emit error(3);
+            _error = true;
+        }
+        if(_error) return;
+        RegistrationCarMsg* msg = new RegistrationCarMsg();
+        msg->login = login;
+        msg->carBrend = brend;
+        msg->carModel = model;
+        msg->carColor = color;
+        msg->carNumber = number;
+        msg->year = year;
+        for(auto i : docs)
+        {
+            QFileInfo info(i.second);
+            QFile::copy(i.second, QString(PATH) + "/../Server/msg/" + i.first + " " + msg->carBrend + " " + msg->carModel + " " + msg->carNumber + "." + info.suffix());
+            msg->documents.push_back(std::make_pair(i.first, i.first + " " + msg->carBrend + " " + msg->carModel + " " + msg->carNumber + "." + info.suffix()));
+        }
+
+        CarParam param;
+        param.carName = msg->carBrend + " " + msg->carModel + " " + msg->carNumber;
+        param.carPics = msg->documents.back().second;
+        param.carNumber = msg->carNumber;
+        param.carOwner  = msg->login;
+        param.carConfirm  = false;
+        param.isLast  = false;
+        emit addCar(param);
+        emit transmitMsg(msg);
+        emit waitingConfirm();
+
+        emit pop();
     }
-    emit transmitMsg(msg);
-    emit waitingConfirm();
-    root->findChild<QObject*>("registrationPerson")->setProperty("visible",false);
 }

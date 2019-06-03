@@ -29,13 +29,24 @@ ServerNet::ServerNet(QObject *parent) : QObject(parent)
     msgNum.push_back("RegistrationMsg");
     converterMsg["RegistrationMsg"] = toRegistrationMsgStruct;
 
+    msgNum.push_back("RegistrationCarMsg");
+    converterMsg["RegistrationCarMsg"] = toRegistrationCarMsgStruct;
+
     //registration req
     reqNum.push_back("RegistrationReq");
     converterReq["RegistrationReq"] = toRegistrationReqStruct;
 
+    reqNum.push_back("RegistrationCarReq");
+    converterReq["RegistrationCarReq"] = toRegistrationCarReqStruct;
+
+
     documentsPersonName.push_back("Passport");
     documentsPersonName.push_back("Driver Licence");
 
+    documentsCarName.push_back("Сertificate");
+    documentsCarName.push_back("PTS");
+    documentsCarName.push_back("OSAGO");
+    documentsCarName.push_back("Photo of car");
     QTimer::singleShot(1000, this, SLOT(receive()));
 }
 
@@ -103,6 +114,11 @@ void ServerNet::scheduler(IMsg* msg)
         schedulerReq(reinterpret_cast<RegistrationMsg*>(msg));
         return;
     }
+    if(typeid (*msg).name() == typeid (RegistrationCarMsg).name())
+    {
+        schedulerReq(reinterpret_cast<RegistrationCarMsg*>(msg));
+        return;
+    }
 }
 
 void ServerNet::scheduler(IReq* req)
@@ -110,6 +126,11 @@ void ServerNet::scheduler(IReq* req)
     if(typeid (*req).name() == typeid (RegistrationReq).name())
     {
         schedulerReq(reinterpret_cast<RegistrationReq*>(req));
+        return;
+    }
+    if(typeid (*req).name() == typeid (RegistrationCarReq).name())
+    {
+        schedulerReq(reinterpret_cast<RegistrationCarReq*>(req));
         return;
     }
 }
@@ -259,7 +280,7 @@ void ServerNet::creatNewFieldDataBase(QString login)
             person.push_back(value);
         }
         obj.insert("PersonalDocuments", person);
-        obj.insert("hasCars", false);
+        obj.insert("HasCars", false);
         QJsonArray cars;
         obj.insert("CarNames", cars);
         array.push_back(obj);
@@ -289,8 +310,8 @@ void ServerNet::schedulerReq(AccessMsg* msg)
                 req->reqName = "AccessReq";
                 req->receiverName = msg->login;
                 req->login = msg->login;
-                req->isPerson = i.toObject().value("confirmPerson").toBool();
-                req->hasCars  = i.toObject().value("hasCars").toBool();
+                req->isPerson = i.toObject().value("ConfirmPerson").toBool();
+                req->hasCars  = i.toObject().value("HasCars").toBool();
                 auto person = i.toObject().value("PersonalDocuments").toArray();
                 for(auto j : person)
                 {
@@ -336,8 +357,8 @@ void ServerNet::schedulerReq(RegistrationMsg* msg)
                 {
                     {"Login", msg->login}
                 };
-                obj.insert("confirmPerson", i.toObject().value("confirmPerson"));
-                obj.insert("hasCars", i.toObject().value("hasCars"));
+                obj.insert("ConfirmPerson", i.toObject().value("ConfirmPerson"));
+                obj.insert("HasCars", i.toObject().value("HasCars"));
                 obj.insert("CarNames", i.toObject().value("CarNames"));
                 QJsonArray personNew;
                 auto person = i.toObject().value("PersonalDocuments").toArray();
@@ -402,8 +423,8 @@ void ServerNet::schedulerReq(RegistrationReq* req)
                 {
                     {"Login", req->login}
                 };
-                obj.insert("confirmPerson", req->isPerson);
-                obj.insert("hasCars", i.toObject().value("hasCars"));
+                obj.insert("ConfirmPerson", req->isPerson);
+                obj.insert("HasCars", i.toObject().value("HasCars"));
                 obj.insert("CarNames", i.toObject().value("CarNames"));
 
                 QJsonArray personNew;
@@ -445,6 +466,194 @@ void ServerNet::schedulerReq(RegistrationReq* req)
         data.open(QIODevice::WriteOnly | QIODevice::Text);
         data.write(newDoc.toJson());
         data.close();
+    }
+}
+void ServerNet::schedulerReq(RegistrationCarMsg* msg)
+{
+    for(auto i : msg->documents)
+    {
+        QFile::copy(QString(PATH) + "/msg/" + i.second, QString(PATH) + "/data/pics/" + i.second);
+        QFile::remove(QString(PATH) + "/msg/" + i.second);
+    }
+    QFile data(wayData + ("/" + QString("Cars") + ".json"));
+    if(data.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        auto val = data.readAll();
+        data.close();
+        QJsonDocument doc = QJsonDocument::fromJson(val);
+        auto array =  doc.object().value("Car").toArray();
+        auto carName = msg->carBrend + " " + msg->carModel + " " + msg->carNumber;
+        QJsonArray correct;
+        for(auto i : array)
+        {
+
+            if(i.toObject().value("Login").toString() == msg->login && i.toObject().value("CarName").toString() == carName)
+            {
+                qDebug() << "Server: found in DataBase car with name: " << carName << " for user: "<< msg->login;
+                return;
+            }else
+            {
+                correct.push_back(i);
+            }
+        }
+        qDebug() << "Server: create new cell in DataBase for car: " << carName << " of user: " << msg->login;
+        QJsonArray arr;
+        for(auto i : msg->documents)
+        {
+            QJsonObject obj
+            {
+                {"DocumentsName", i.first},
+                {"DocumentsFileName", i.second},
+                {"DocumentsConfirm", false}
+            };
+            arr.push_back(obj);
+        }
+        QJsonObject obj
+        {
+            {"Login",     msg->login},
+            {"CarBrend",  msg->carBrend},
+            {"CarModel",  msg->carModel},
+            {"CarColor",  msg->carColor},
+            {"CarNumber", msg->carNumber},
+            {"CarName",   msg->carBrend + " " + msg->carModel + " " + msg->carNumber},
+            {"Year",      msg->year},
+            {"ConfirmCar",false},
+            {"Documents", arr},
+        };
+        correct.push_back(obj);
+        emit transmitMsg(msg);
+        QJsonObject all
+        {
+            {"Car", correct}
+        };
+        QJsonDocument newDoc(all);
+        data.open(QIODevice::WriteOnly | QIODevice::Text);
+        data.write(newDoc.toJson());
+        data.close();
+    }
+}
+void ServerNet::schedulerReq(RegistrationCarReq* req)
+{
+    bool all = true;
+    QFile data(wayData + ("/" + QString("Cars") + ".json"));
+    if(data.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        auto val = data.readAll();
+        data.close();
+        QJsonDocument doc = QJsonDocument::fromJson(val);
+        auto array =  doc.object().value("Car").toArray();
+        QJsonArray correct;
+        for(auto i : array)
+        {
+
+            if(i.toObject().value("Login").toString() == req->login
+                    && i.toObject().value("CarName").toString() == req->carName)
+            {
+                if(req->isCar)
+                {
+                    QJsonArray arr = i.toObject().value("Documents").toArray();
+                    QJsonArray arrnew;
+                    if(arr.size() == documentsCarName.size())
+                    {
+                        for(size_t j = 0; j < arr.size(); j++)
+                        {
+                            if(arr[j].toObject().value("DocumentsName").toString() != documentsCarName[j])
+                            {
+                                all = false;
+                            }else
+                            {
+                                QJsonObject obj
+                                {
+                                    {"DocumentsName", arr[j].toObject().value("DocumentsName").toString()},
+                                    {"DocumentsFileName", arr[j].toObject().value("DocumentsFileName").toString()},
+                                    {"DocumentsConfirm", true}
+                                };
+                                arrnew.push_back(obj);
+                            }
+                        }
+                        if(all)
+                        {
+                            qDebug() << "Server: correct cell in DataBase for car: " << req->carName << " of user: " << req->login;
+                            QJsonObject obj
+                            {
+                                {"Login",      i.toObject().value("Login").toString()},
+                                {"CarBrend",   i.toObject().value("CarBrend").toString()},
+                                {"CarModel",   i.toObject().value("CarModel").toString()},
+                                {"CarColor",   i.toObject().value("CarColor").toString()},
+                                {"CarNumber",  i.toObject().value("CarNumber").toString()},
+                                {"CarName",    i.toObject().value("CarName").toString()},
+                                {"Year",       i.toObject().value("Year").toInt()},
+                                {"ConfirmCar", true},
+                                {"Documents",  arrnew},
+                            };
+                            correct.push_back(obj);
+                        }else
+                        {
+                            qDebug() << "Server: delete cell in DataBase for car: " << req->carName << " of user: " << req->login;
+                        }
+                    }else
+                    {
+                        req->isCar = false;
+                    }
+                }else
+                {
+                    qDebug() << "Server: delete cell in DataBase for car: " << req->carName << " of user: " << req->login;
+                }
+            }else
+            {
+                correct.push_back(i);
+            }
+        }
+        QJsonObject all
+        {
+            {"Car", correct}
+        };
+        QJsonDocument newDoc(all);
+        data.open(QIODevice::WriteOnly | QIODevice::Text);
+        data.write(newDoc.toJson());
+        data.close();
+    }
+    if(req->isCar)
+    {
+        QFile data1(wayData + ("/" + QString("Access") + ".json"));
+        if(data1.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            auto val = data1.readAll();
+            data1.close();
+            QJsonDocument doc = QJsonDocument::fromJson(val);
+            auto array =  doc.object().value("User").toArray();
+            QJsonArray correct;
+            for(auto i : array)
+            {
+                if(i.toObject().value("Login").toString() == req->login)
+                {
+                    qDebug() << "Server: correct cell in DataBase for user: " << req->login;
+                    QJsonObject obj
+                    {
+                        {"Login", req->login}
+                    };
+                    obj.insert("ConfirmPerson", i.toObject().value("ConfirmPerson"));
+                    obj.insert("HasCars", true);
+                    auto arr = i.toObject().value("CarNames").toArray();
+                    arr.push_back(req->carName);
+                    obj.insert("CarNames", arr);
+                    obj.insert("Documents", i.toObject().value("Documents"));
+                    correct.push_back(obj);
+                    emit transmitReq(req);
+                }else
+                {
+                    correct.push_back(i);
+                }
+            }
+            QJsonObject all
+            {
+                {"User", correct}
+            };
+            QJsonDocument newDoc(all);
+            data1.open(QIODevice::WriteOnly | QIODevice::Text);
+            data1.write(newDoc.toJson());
+            data1.close();
+        }
     }
 }
 void ServerNet::transmit(IReq* req)

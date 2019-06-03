@@ -46,6 +46,7 @@ public slots:
     void clear();
     void setDocFile(int, QString);
     void confirm();
+    void confirmCar();
     void setDocName(QStringList);
 signals:
     void setVisible(int idDoc, bool vis);

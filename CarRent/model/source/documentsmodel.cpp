@@ -106,6 +106,7 @@ void DocumentsModel::clear()
     documentsFile.clear();
     for(int idDoc = 0; idDoc < documentsName.size(); idDoc++)
         emit setVisible(idDoc, false);
+    documentsName.clear();
 }
 
 void DocumentsModel::confirm()
@@ -113,6 +114,15 @@ void DocumentsModel::confirm()
     emit confirmDocs(documentsFile);
     clear();
 }
+
+void DocumentsModel::confirmCar()
+{
+    emit confirmDocs(documentsFile);
+    for(int idDoc = 0; idDoc < documentsName.size(); idDoc++)
+        emit setVisible(idDoc, false);
+    documentsFile.clear();
+}
+
 void DocumentsModel::setDocName(QStringList list)
 {
     documentsName = list;

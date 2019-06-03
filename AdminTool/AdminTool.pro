@@ -28,6 +28,7 @@ HEADERS += \
     $$PWD/../CarRent/header/msg/loginmsg.h \
     $$PWD/../CarRent/header/msg/accessmsg.h \
     $$PWD/../CarRent/header/msg/registrationmsg.h \
+    $$PWD/../CarRent/header/msg/registrationcarmsg.h \
     $$PWD/../CarRent/header/msg/imsg.h
 
 
@@ -40,7 +41,9 @@ SOURCES += \
         main.cpp \
         $$PWD/../CarRent/source/loginmsg.cpp \
         $$PWD/../CarRent/source/accessmsg.cpp \
-        $$PWD/../CarRent/source/registrationmsg.cpp
+        $$PWD/../CarRent/source/registrationmsg.cpp \
+        $$PWD/../CarRent/source/registrationcarmsg.cpp
+
 
 RESOURCES += qml.qrc
 

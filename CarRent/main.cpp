@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     unique_ptr<Core>      core = std::make_unique<Core>();
 
     QStringList docPerson = { "Passport", "DriverLiceince"};
-    QStringList docCar =    { "Сertificate", "PTS", "OSAGO"};
+    QStringList docCar =    { "Сertificate", "PTS", "OSAGO", "Photo of car"};
     unique_ptr<DocumentsModel> person = std::make_unique<DocumentsModel>(docPerson);
     unique_ptr<DocumentsModel> car = std::make_unique<DocumentsModel>(docCar);
     unique_ptr<CarModel>       cars   = std::make_unique<CarModel>();
@@ -43,6 +43,10 @@ int main(int argc, char *argv[])
     QObject::connect(core.get(), SIGNAL(setDocName(QStringList)), person.get(), SLOT(setDocName(QStringList)));
     QObject::connect( person.get(), SIGNAL(confirmDocs(std::vector<std::pair<QString, QString>>))
                     , core.get(), SLOT(confirmDocs(std::vector<std::pair<QString, QString>>)));
+
+    QObject::connect( car.get(), SIGNAL(confirmDocs(std::vector<std::pair<QString, QString>>))
+                    , core.get(), SLOT(confirmDocs(std::vector<std::pair<QString, QString>>)));
+
     QObject::connect(core.get(), SIGNAL(transmitMsg(IMsg*)), net.get(), SLOT(transmit(IMsg*)));
     //application login
     const QUrl urlLogin(QStringLiteral("qrc:/LoginPage.qml"));
@@ -87,7 +91,7 @@ int main(int argc, char *argv[])
     QObject::connect(root, SIGNAL(attachImageCar(int, QString)), car.get(), SLOT(setDocFile(int, QString)));
 
     QObject::connect(root, SIGNAL(confirmPerson()), person.get(), SLOT(confirm()));
-    QObject::connect(root, SIGNAL(confirmPerson()), car.get()   , SLOT(confirm()));
+    QObject::connect(root, SIGNAL(confirmCar()), car.get()   , SLOT(confirmCar()));
 
     QObject::connect(root, SIGNAL(carView(int)), cars.get(), SLOT(carView(int)));
     return app.exec();

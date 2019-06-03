@@ -51,6 +51,18 @@ Page {
 
         placeholderText: qsTr("Kia")
         placeholderTextColor: "papayawhip"
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "papayawhip"
+            OpacityAnimator on opacity
+            {
+                id: er0
+                from: 0.7
+                to  : 0.0
+                duration: 500
+            }
+        }
     }
     Label
     {
@@ -70,6 +82,18 @@ Page {
 
         placeholderText: qsTr("Rio")
         placeholderTextColor: "papayawhip"
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "papayawhip"
+            OpacityAnimator on opacity
+            {
+                id: er1
+                from: 0.7
+                to  : 0.0
+                duration: 500
+            }
+        }
     }
     Label
     {
@@ -83,13 +107,25 @@ Page {
     TextField
     {
         id: lineCarColor
-        objectName: "lineCarModel"
+        objectName: "lineCarColor"
         anchors.top:  lineCarBrend.top
         anchors.left: carColor.right
         width: lineCarModel.width
 
         placeholderText: qsTr("Red")
         placeholderTextColor: "papayawhip"
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "papayawhip"
+            OpacityAnimator on opacity
+            {
+                id: er2
+                from: 0.7
+                to  : 0.0
+                duration: 500
+            }
+        }
     }
     Label
     {
@@ -102,27 +138,46 @@ Page {
     TextField
     {
         id: lineCarNumber
-        objectName: "lineCarModel"
+        objectName: "lineCarNumber"
         anchors.top:  lineCarColor.bottom
         anchors.left: lineCarColor.left
         width: lineCarModel.width
 
         placeholderText: qsTr("o777oo 197 RUS")
         placeholderTextColor: "papayawhip"
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "papayawhip"
+            OpacityAnimator on opacity
+            {
+                id: er3
+                from: 0.7
+                to  : 0.0
+                duration: 500
+            }
+        }
     }
     Label
     {
         id: carYear
         width: carColor.width
+        height: carModel.height
         anchors.top:  lineCarNumber.bottom
         anchors.horizontalCenter: carlabel1.horizontalCenter
         text: qsTr("Year of issue: ")
     }
-
+    Label
+    {
+        id: anch
+        anchors.top: carYear.bottom
+        anchors.topMargin: 10
+        height: carYear.height
+    }
     Tumbler
     {
         property date year: new Date()
-        anchors.top: lineCarBrend.top
+        anchors.verticalCenter: anch.verticalCenter
         anchors.topMargin: 10
         anchors.horizontalCenter: carYear.horizontalCenter
         width: carYear.height
@@ -216,6 +271,7 @@ Page {
         visible: false
         onClicked:
         {
+            visible = false
             window.confirmCar()
         }
     }
@@ -318,6 +374,31 @@ Page {
                     }
                 }
             }
+        }
+    }
+    Connections
+    {
+        target: core
+        onError:
+        {
+            switch(errorCode)
+            {
+                case 0:
+                    er0.restart();
+                    break;
+                case 1:
+                    er1.restart();
+                    break;
+                case 2:
+                    er2.restart();
+                    break;
+                case 3:
+                    er3.restart();
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

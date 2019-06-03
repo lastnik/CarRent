@@ -23,7 +23,8 @@ SOURCES += \
         transmiter.cpp \
         $$PWD/../CarRent/source/loginmsg.cpp \
         $$PWD/../CarRent/source/accessmsg.cpp\
-        $$PWD/../CarRent/source/registrationmsg.cpp
+        $$PWD/../CarRent/source/registrationmsg.cpp \
+        $$PWD/../CarRent/source/registrationcarmsg.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -37,4 +38,5 @@ HEADERS += \
     $$PWD/../CarRent/header/msg/loginmsg.h \
     $$PWD/../CarRent/header/msg/accessmsg.h \
     $$PWD/../CarRent/header/msg/registrationmsg.h \
+    $$PWD/../CarRent/header/msg/registrationcarmsg.h \
     $$PWD/../CarRent/header/msg/imsg.h

@@ -4,6 +4,7 @@
 #include <QObject>
 #include "loginmsg.h"
 #include "registrationmsg.h"
+#include "registrationcarmsg.h"
 #include "accessmsg.h"
 #include "carmodel.h"
 
@@ -20,8 +21,11 @@ signals:
     void waitingConfirm();
     // list model documents
     void add(int id, QString name, bool vis);
+    void pop();
     void clear();
     void setCars(std::vector<CarParam>);
+    void addCar(CarParam);
+    void error(int errorCode);
 public slots:
     void receiveReq(IReq*);
     void accessInfo();
@@ -31,6 +35,7 @@ public slots:
 private:
     void scheduler(AccessReq* req);
     void scheduler(RegistrationReq* req);
+    void scheduler(RegistrationCarReq* req);
     QObject *root = nullptr;
     QString         login;
 };

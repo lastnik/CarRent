@@ -1,0 +1,36 @@
+{
+    "Car": [
+        {
+            "CarBrend": "Kai",
+            "CarColor": "Red",
+            "CarModel": "Rio",
+            "CarName": "Kai Rio o777o 197 Rus",
+            "CarNumber": "o777o 197 Rus",
+            "ConfirmCar": true,
+            "Documents": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Сertificate Kai Rio o777o 197 Rus.png",
+                    "DocumentsName": "Сertificate"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "PTS Kai Rio o777o 197 Rus.png",
+                    "DocumentsName": "PTS"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "OSAGO Kai Rio o777o 197 Rus.png",
+                    "DocumentsName": "OSAGO"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Photo of car Kai Rio o777o 197 Rus.png",
+                    "DocumentsName": "Photo of car"
+                }
+            ],
+            "Login": "12345",
+            "Year": 2012
+        }
+    ]
+}

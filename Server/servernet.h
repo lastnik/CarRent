@@ -9,6 +9,7 @@
 #include "loginmsg.h"
 #include "accessmsg.h"
 #include "registrationmsg.h"
+#include "registrationcarmsg.h"
 #include <functional>
 #include <map>
 #include <vector>
@@ -36,6 +37,8 @@ private:
     void schedulerReq(AccessMsg*);
     void schedulerReq(RegistrationMsg*);
     void schedulerReq(RegistrationReq*);
+    void schedulerReq(RegistrationCarMsg*);
+    void schedulerReq(RegistrationCarReq*);
 private:
     std::unique_ptr<server::ITransmiter> transmiter;
     std::unique_ptr<server::IReceiver>   receiver;
@@ -44,6 +47,7 @@ private:
     std::vector<QString> msgNum;
     std::vector<QString> reqNum;
     std::vector<QString> documentsPersonName;
+    std::vector<QString> documentsCarName;
 };
 
 #endif // SERVERNET_H

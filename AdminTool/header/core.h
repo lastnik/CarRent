@@ -4,6 +4,7 @@
 #include <QObject>
 #include "loginmsg.h"
 #include "registrationmsg.h"
+#include "registrationcarmsg.h"
 #include "accessmsg.h"
 #include "imsg.h"
 #include <vector>
@@ -33,8 +34,10 @@ public slots:
     void sendResponce(int,int,int);
 private:
     void schedulerReq(RegistrationMsg*);
+    void schedulerReq(RegistrationCarMsg*);
     QObject *root = nullptr;
-    std::vector<RegistrationMsg*>                history;
+    std::vector<RegistrationMsg*>                historyPerson;
+    std::vector<RegistrationCarMsg*>             historyCar;
     std::vector<std::pair<QString, int>>         total;
 };
 

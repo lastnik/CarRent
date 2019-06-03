@@ -9,7 +9,7 @@ ApplicationWindow {
     objectName: "window"
     visible: true
     width: 640
-    height: 480
+    height: 640
     title: qsTr("AdminTool")
     signal clickedMe(int index)
     signal sendResponce(int indexReq, int totalReq, int value);
@@ -223,6 +223,242 @@ ApplicationWindow {
         anchors.centerIn: parent
         width:  parent.width * 0.8
         height: parent.width * 0.8
+        property int indexReq
+        property int totalReq
+        property int bitmap : 0
+        property string brend  : ""
+        property string model  : ""
+        property string color  : ""
+        property string number : ""
+        property int    year   : 0
+        SwipeView {
+            id: carView
+            anchors.top:  parent.top
+            width:        parent.width
+            height:       parent.height * 0.6
+            anchors.left: parent.Left
+            anchors.bottom: lineCarBrend.top
+            ListView {
+                model: car
+                width: parent.width
+                delegate: ItemDelegate
+                {
+                    width: parent.width
+                    Label
+                    {
+                        id: carDocName
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 10
+                        text: qsTr("Documtent: " + model.documents)
+                    }
+                    ItemDelegate
+                    {
+                        anchors.right: switchMyCar.left
+                        anchors.rightMargin: 10
+                        anchors.verticalCenter: parent.verticalCenter
+                        Image
+                        {
+                            anchors.fill: parent
+                            fillMode: Image.PreserveAspectFit
+                            source: "qrc:/source/pics/eye.png"
+                        }
+                        onClicked:
+                        {
+                            imageDialogCar.visible = true
+                        }
+                    }
+                    Dialog{
+                        id: imageDialogCar
+                        //anchors.centerIn: window
+                        width: window.width / 2
+                        height: window.height / 2
+                        visible: false
+                        Image
+                        {
+                            anchors.fill: parent
+                            fillMode: Image.PreserveAspectFit
+                            source: "file:/" + model.source
+                        }
+                    }
+                    Switch
+                    {
+                        id: switchMyCar
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: qsTr("Correct")
+                        position: 0.0
+                        onClicked:
+                        {
+                            if(position === 0.0)
+                            {
+
+                                carRegistration.bitmap = carRegistration.bitmap & (~(1 << model.index))
+                            }else
+                            {
+
+                                carRegistration.bitmap = carRegistration.bitmap | (1 << model.index)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Label
+        {
+            id: carBrend
+            width: parent.width / 7
+            anchors.left: carYear.left
+            anchors.verticalCenter: lineCarBrend.verticalCenter
+            text: qsTr("Car brend: ")
+        }
+        TextField
+        {
+            id: lineCarBrend
+            objectName: "lineCarBrend"
+            anchors.top:  lineCarModel.top
+            anchors.right: lineCarNumber.right
+            width: parent.width / 3
+
+            placeholderText: qsTr("%1").arg(carRegistration.brend)
+            placeholderTextColor: "papayawhip"
+            horizontalAlignment : TextInput.AlignHCenter
+            verticalAlignment : TextInput.AlignVCenter
+            enabled: false
+        }
+
+        Label
+        {
+            id: carModel
+            width: carBrend.width
+            anchors.verticalCenter: lineCarModel.verticalCenter
+            anchors.left: carColor.left
+            text: qsTr("Car model: ")
+        }
+        TextField
+        {
+            id: lineCarModel
+            anchors.bottom:  lineCarColor.top
+            anchors.bottomMargin: 10
+            anchors.left: lineCarColor.left
+            width: lineCarBrend.width
+
+            placeholderText: qsTr("%1").arg(carRegistration.model)
+            placeholderTextColor: "papayawhip"
+            horizontalAlignment : TextInput.AlignHCenter
+            verticalAlignment : TextInput.AlignVCenter
+            enabled: false
+        }
+
+        Label
+        {
+            id: carColor
+            width: carModel.width
+            anchors.verticalCenter: lineCarColor.verticalCenter
+            anchors.left:  switchMyCarInfo.left
+            text: qsTr("Car color: ")
+        }
+        TextField
+        {
+            id: lineCarColor
+            anchors.top:  lineCarNumber.top
+            anchors.left: carColor.right
+            width: lineCarModel.width
+            placeholderText: qsTr("%1").arg(carRegistration.color)
+            placeholderTextColor: "papayawhip"
+            horizontalAlignment : TextInput.AlignHCenter
+            verticalAlignment : TextInput.AlignVCenter
+            enabled: false
+        }
+
+
+        Label
+        {
+            id: carNumber
+            width: carColor.width
+            anchors.verticalCenter:  lineCarNumber.verticalCenter
+            anchors.right: lineCarNumber.left
+            anchors.rightMargin: 20
+            text: qsTr("Car number: ")
+        }
+        TextField
+        {
+            id: lineCarNumber
+            anchors.bottom:  lineCarYear.top
+            anchors.bottomMargin: 10
+            anchors.right: lineCarYear.right
+
+            width: lineCarModel.width
+            placeholderText: qsTr("%1").arg(carRegistration.number)
+            placeholderTextColor: "papayawhip"
+            horizontalAlignment : TextInput.AlignHCenter
+            verticalAlignment : TextInput.AlignVCenter
+            enabled : false
+        }
+        Label
+        {
+            id: carYear
+            width: carColor.width
+            height: carModel.height
+            anchors.verticalCenter: lineCarYear.verticalCenter
+            anchors.right: lineCarYear.left
+            anchors.rightMargin: 20
+            text: qsTr("Year of issue: ")
+        }
+        TextField
+        {
+            id: lineCarYear
+            anchors.bottom: customButton.top
+            anchors.right: customButton.horizontalCenter
+            anchors.rightMargin: 10
+            width: lineCarModel.width
+            placeholderText: qsTr("%1").arg(carRegistration.year)
+            placeholderTextColor: "papayawhip"
+            horizontalAlignment : TextInput.AlignHCenter
+            verticalAlignment : TextInput.AlignVCenter
+            enabled : false
+        }
+        Switch
+        {
+            id: switchMyCarInfo
+            anchors.bottom: customButton.top
+            anchors.left: customButton.horizontalCenter
+            anchors.leftMargin: 10
+            text: qsTr("Correct")
+            position: 0.0
+            onClicked:
+            {
+                    carRegistration.bitmap = -carRegistration.bitmap
+            }
+        }
+        ItemDelegate{
+            anchors.bottom : parent.bottom
+            anchors.bottomMargin: 20
+            anchors.horizontalCenter: carView.horizontalCenter
+            width: sendResponceCar.width * 1.2
+            height: sendResponceCar.height * 1.2
+            id: customButton
+            Rectangle
+            {
+                anchors.fill: parent
+                radius: 15
+                color: "royalblue"
+                Text
+                {
+                    id: sendResponceCar
+                    anchors.centerIn: parent
+                    text: qsTr("Send Responce")
+                    font.pointSize: 10
+                    color: "whitesmoke"
+                }
+            }
+            onClicked:
+            {
+                carRegistration.visible = false;
+                window.sendResponce(carRegistration.indexReq, carRegistration.totalReq, carRegistration.bitmap);
+            }
+        }
     }
     Connections
     {
@@ -237,7 +473,13 @@ ApplicationWindow {
         target: core
         onAddDoc:
         {
-            person.append({"documents" : docName, "source" : docSource})
+            if(personRegistration.visible === true)
+            {
+                person.append({"documents" : docName, "source" : docSource})
+            }else
+            {
+                car.append({"documents" : docName, "source" : docSource})
+            }
         }
     }
     Connections
@@ -262,25 +504,4 @@ ApplicationWindow {
             }
         }
     }
-    /*StackView {
-        id: stackView
-        objectName: "stackView"
-        initialItem: "qrc:/pages/pages/ListPage.ui.qml"
-        anchors.fill: parent
-
-        MyBusyIndicator {
-            id: busyIndicator
-            x: window.width * 3 / 8
-            y: window.height / 4
-            width: window.width / 4
-            height: window.height / 4
-            clip: true
-            scale: 1
-            z: 0
-            rotation: 0
-            transformOrigin: Item.Center
-            focusPolicy: Qt.WheelFocus
-        }
-        visible: true
-    }*/
 }

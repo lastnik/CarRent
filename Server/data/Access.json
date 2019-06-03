@@ -2,22 +2,11 @@
     "User": [
         {
             "CarNames": [
+                "Kai Rio o777o 197 Rus"
             ],
-            "Login": "12345",
-            "PersonalDocuments": [
-                {
-                    "DocumentsConfirm": true,
-                    "DocumentsFileName": "Passport12345.png",
-                    "DocumentsName": "Passport"
-                },
-                {
-                    "DocumentsConfirm": true,
-                    "DocumentsFileName": "Driver Licence12345.png",
-                    "DocumentsName": "Driver Licence"
-                }
-            ],
-            "confirmPerson": true,
-            "hasCars": false
+            "ConfirmPerson": true,
+            "HasCars": true,
+            "Login": "12345"
         }
     ]
 }

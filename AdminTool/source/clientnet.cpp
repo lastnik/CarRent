@@ -4,6 +4,7 @@
 #include "loginmsg.h"
 #include "accessmsg.h"
 #include "registrationmsg.h"
+#include "registrationcarmsg.h"
 
 #include <memory>
 #include <QTimer>
@@ -19,6 +20,9 @@ ClientNet::ClientNet(QObject *parent) : QObject(parent)
 
    msgNum.push_back("RegistrationMsg");
    converterMsg["RegistrationMsg"] = toRegistrationMsgStruct;
+
+   msgNum.push_back("RegistrationCarMsg");
+   converterMsg["RegistrationCarMsg"] = toRegistrationCarMsgStruct;
 
    QTimer::singleShot(1000, this, SLOT(receive()));
 }
