@@ -1,6 +1,6 @@
 #include "carmodel.h"
 
-CarModel::CarModel(std::vector<QString> listName)
+CarModel::CarModel()
 {
     clear();
 }
@@ -58,6 +58,18 @@ void CarModel::setParams(std::vector<CarParam> listName)
             carsParam.push_back(i);
     }
     push_back();
+}
+
+
+void CarModel::carView(int id)
+{
+    if(id == carsParam.size() - 1)
+    {
+        emit carRegistrationPage();
+    }else
+    {
+
+    }
 }
 
 void CarModel::setInfo(CarParam param)

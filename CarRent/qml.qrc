@@ -8,8 +8,9 @@
     <qresource prefix="/pages">
         <file>pages/ListPage.ui.qml</file>
         <file>pages/Page1Form.qml</file>
-        <file>pages/Page2Form.ui.qml</file>
+        <file>pages/Page2Form.qml</file>
         <file>pages/WaitingPage.qml</file>
+        <file>pages/AddCarPage.qml</file>
     </qresource>
     <qresource prefix="/source">
         <file>pics/leftArrow.png</file>

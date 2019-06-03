@@ -12,8 +12,11 @@ ApplicationWindow {
     height: 480
     title: qsTr("Stack")
     signal attachImage(int docID, string name)
+    signal attachImageCar(int docID, string name)
     signal confirmPerson()
+    signal confirmCar()
     signal pop()
+    signal carView(int id)
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
         ToolButton {
@@ -108,7 +111,7 @@ ApplicationWindow {
                 objectName: "myCars"
                 width: parent.width
                 onClicked: {
-                    stackView.push("qrc:/pages/pages/Page2Form.ui.qml")
+                    stackView.push("qrc:/pages/pages/Page2Form.qml")
                     drawer.close()
                 }
             }
@@ -415,7 +418,27 @@ ApplicationWindow {
     ListModel {
         id: documentsFirstly
     }
-
+    ListModel {
+        id: documentsCars
+        ListElement
+        {
+            index : 0
+            documentsName: "Сertificate"
+            visibleMark: false
+        }
+        ListElement
+        {
+            index : 1
+            documentsName: "PTS"
+            visibleMark: false
+        }
+        ListElement
+        {
+            index : 2
+            documentsName: "OSAGO"
+            visibleMark: false
+        }
+    }
     Connections
     {
         target: core
@@ -440,12 +463,30 @@ ApplicationWindow {
             note.visible = true
         }
     }
+
     Connections
     {
         target: personModel
         onSetVisible:
         {
             documentsFirstly.get(idDoc).visibleMark = vis
+        }
+    }
+
+    Connections
+    {
+        target: carDocModel
+        onSetVisible:
+        {
+            documentsCars.get(idDoc).visibleMark = vis
+        }
+    }
+    Connections
+    {
+        target: carModel
+        onCarRegistrationPage:
+        {
+            stackView.push("qrc:/pages/pages/AddCarPage.qml")
         }
     }
 }

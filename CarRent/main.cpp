@@ -29,7 +29,12 @@ int main(int argc, char *argv[])
     unique_ptr<Core>      core = std::make_unique<Core>();
 
     QStringList docPerson = { "Passport", "DriverLiceince"};
+    QStringList docCar =    { "Сertificate", "PTS", "OSAGO"};
     unique_ptr<DocumentsModel> person = std::make_unique<DocumentsModel>(docPerson);
+    unique_ptr<DocumentsModel> car = std::make_unique<DocumentsModel>(docCar);
+    unique_ptr<CarModel>       cars   = std::make_unique<CarModel>();
+
+
 
     QObject::connect(log.get(), SIGNAL(tryLogin(IMsg*)), net.get(), SLOT(transmit(IMsg*)));
     QObject::connect(net.get(), SIGNAL(receive(IReq*)),  core.get(), SLOT(receiveReq(IReq*)));
@@ -49,6 +54,8 @@ int main(int argc, char *argv[])
     unique_ptr<SenderCalendar> senderCalendar = std::make_unique<SenderCalendar>(nullptr);
     context->setContextProperty("calendar", senderCalendar.get());
     context->setContextProperty("personModel", person.get());
+    context->setContextProperty("carModel", cars.get());
+    context->setContextProperty("carDocModel", car.get());
     context->setContextProperty("core", core.get());
 
     engine.load(url);
@@ -77,6 +84,11 @@ int main(int argc, char *argv[])
     QObject::connect(root->findChild<QObject*>("grid"), SIGNAL(changeDate(QDateTime)), senderCalendar.get(), SLOT(changeDate(QDateTime)));
 
     QObject::connect(root, SIGNAL(attachImage(int, QString)), person.get(), SLOT(setDocFile(int, QString)));
+    QObject::connect(root, SIGNAL(attachImageCar(int, QString)), car.get(), SLOT(setDocFile(int, QString)));
+
     QObject::connect(root, SIGNAL(confirmPerson()), person.get(), SLOT(confirm()));
+    QObject::connect(root, SIGNAL(confirmPerson()), car.get()   , SLOT(confirm()));
+
+    QObject::connect(root, SIGNAL(carView(int)), cars.get(), SLOT(carView(int)));
     return app.exec();
 }

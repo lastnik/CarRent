@@ -9,12 +9,12 @@
 #include <utility>
 struct CarParam
 {
-    QString carName;
-    QString carPics;
-    QString carNumber;
-    QString carOwner;
-    bool    carConfirm;
-    bool    isLast;
+    QString carName = "";
+    QString carPics = "";
+    QString carNumber = "";
+    QString carOwner = "";
+    bool    carConfirm = false;
+    bool    isLast = false;
 };
 class CarModel : public QAbstractListModel
 {
@@ -30,7 +30,7 @@ public:
         carConfirm,
         isLast
     };
-    CarModel(std::vector<QString> listName);
+    CarModel();
     void setRoot(QObject*);
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual QHash<int, QByteArray> roleNames() const;
@@ -39,8 +39,10 @@ public slots:
     void setInfo(CarParam param);
     void setParams(std::vector<CarParam> params);
     void clear();
+    void carView(int);
 signals:
-
+    void carRegistrationPage();
+    //void carPage();
 private:
     void push_back();
     std::vector<CarParam> carsParam;
