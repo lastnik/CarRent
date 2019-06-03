@@ -8,6 +8,7 @@ struct IMsg : public QObject
 public:
     virtual QJsonObject toJsonObject()=0;
     QString msgName;
+    QString transmiterName;
 };
 
 struct IReq : public QObject

@@ -45,6 +45,13 @@ ServerNet::ServerNet(QObject *parent) : QObject(parent)
 void ServerNet::receive()
 {
     qDebug() << "Server: Start Receiving messages";
+    //ADMIN
+    IMsg* msg = receiver->receiveAdmin("LoginMsg",converterMsg.at("LoginMsg"));
+    if(msg != nullptr)
+    {
+        qDebug() << "Server: Receive msg - " << "LoginMsg";
+        emit receiveAdmin(msg);
+    }
     for(auto i : msgNum)
     {
         do{
@@ -58,13 +65,6 @@ void ServerNet::receive()
                 break;
             }
         }while(true);
-    }
-    //ADMIN
-    IMsg* msg = receiver->receiveAdmin("LoginMsg",converterMsg.at("LoginMsg"));
-    if(msg != nullptr)
-    {
-        qDebug() << "Server: Receive msg - " << "LoginMsg";
-        emit receiveAdmin(msg);
     }
     qDebug() << "Server: Stop Receiving messages" << endl;
     qDebug() << "Server: Start Receiving requests";

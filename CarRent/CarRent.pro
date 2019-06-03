@@ -30,7 +30,9 @@ HEADERS += \
     $$PWD/header/core.h \
     $$PWD/header/msg/registrationmsg.h \
     $$PWD/model/header/documentsmodel.h \
-    $$PWD/header/msg/accessmsg.h
+    $$PWD/header/msg/accessmsg.h \
+    $$PWD/model/header/carmodel.h \
+    header/msg/carinfomsg.h
 
 
 
@@ -41,9 +43,11 @@ SOURCES += \
         core.cpp \
         documentsmodel.cpp \
         accessmsg.cpp \
+        carmodel.cpp \
         registrationmsg.cpp \
         receiver.cpp \
         loginmsg.cpp \
+        source/carinfomsg.cpp \
         transmiter.cpp \
         login.cpp \
         main.cpp

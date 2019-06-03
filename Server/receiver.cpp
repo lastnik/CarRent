@@ -9,14 +9,24 @@ QString wayMsg = QString(PATH) + "/msg";
 extern QString wayReq;
 IMsg* FileReceiver::receive(QString msgName, std::function<IMsg*(QJsonDocument)>& fromJson)
 {
-    QFile letter(wayMsg + ("/" + msgName + ".json"));
-    if(letter.open(QIODevice::ReadOnly | QIODevice::Text))
+    QDir dir(wayMsg);
+    auto list = dir.entryList(QStringList("*"), QDir::Files);
+    for(auto i : list)
     {
-        auto val = letter.readAll();
-        letter.close();
-        QJsonDocument doc = QJsonDocument::fromJson(val);
-        letter.remove();
-        return fromJson(doc);
+        if(i.toStdString().find(msgName.toStdString()) != std::string::npos
+                && i.toStdString().find("Admin.json")  == std::string::npos)
+        {
+            QFile letter(wayMsg + ("/" + i));
+            if(letter.open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                auto val = letter.readAll();
+                letter.close();
+                QJsonDocument doc = QJsonDocument::fromJson(val);
+                letter.remove();
+                return fromJson(doc);
+            }
+            return nullptr;
+        }
     }
     return nullptr;
 }

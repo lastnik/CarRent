@@ -26,7 +26,7 @@ struct AccessReq: public IReq
 public:
     explicit AccessReq():IReq()
     {
-        IReq::reqName = "LoginReq";
+        IReq::reqName = "AccessReq";
     }
     ~AccessReq(){}
     virtual QJsonObject toJsonObject() override;

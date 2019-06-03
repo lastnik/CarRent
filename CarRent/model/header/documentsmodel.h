@@ -1,6 +1,6 @@
 #ifndef DOCUMENTSMODEL_H
 #define DOCUMENTSMODEL_H
-#include<QObject>
+#include <QObject>
 #include <QAbstractListModel>
 #include <QObjectList>
 #include <QStringList>

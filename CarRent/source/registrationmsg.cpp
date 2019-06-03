@@ -24,6 +24,7 @@ QJsonObject RegistrationMsg::toJsonObject()
             msgName, obj
         }
     };
+    transmiterName = login;
     return total;
 }
 
@@ -34,6 +35,7 @@ IMsg* toRegistrationMsgStruct(QJsonDocument doc)
     auto content = doc.object().value("RegistrationMsg");
     msg->login   = content.toObject().value("Login").toString();
     auto arr     = content.toObject().value("Documents").toArray();
+    msg->transmiterName = msg->login;
     for(auto i : arr)
     {
         msg->documents.push_back(std::make_pair( i.toObject().value("DocumentName").toString()

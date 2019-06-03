@@ -14,6 +14,7 @@ QJsonObject LoginMsg::toJsonObject()
             msgName, obj
         }
     };
+    transmiterName = login;
     return total;
 };
 
@@ -25,6 +26,7 @@ IMsg* toLoginMsgStruct(QJsonDocument doc)
     msg->login = content.toObject().value("Login").toString();
     msg->password = content.toObject().value("Password").toString();
     msg->isUser = content.toObject().value("isUser").toBool();
+    msg->transmiterName = msg->login;
     return msg;
 }
 

@@ -12,6 +12,7 @@ QJsonObject AccessMsg::toJsonObject()
             msgName, obj
         }
     };
+    transmiterName = login;
     return total;
 }
 
@@ -21,6 +22,7 @@ IMsg* toAccessMsgStruct(QJsonDocument doc)
     msg->msgName = "AccessMsg";
     auto content = doc.object().value("AccessMsg");
     msg->login   = content.toObject().value("Login").toString();
+    msg->transmiterName = msg->login;
     return msg;
 }
 

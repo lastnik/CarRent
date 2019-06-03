@@ -72,15 +72,28 @@ void Core::scheduler(AccessReq* req)
             root->findChild<QObject*>("registrationPerson")->setProperty("visible", true);
         }else
         {
-            if(list.size() != 0 && req->isPerson == true)
+            if(list.size() == 0 && req->isPerson == true)
             {
                 root->findChild<QObject*>("registrationPerson")->setProperty("visible", false);
+                root->findChild<QObject*>("myCars")->setProperty("visible", true);
+                if(req->hasCars)
+                {
+                    for(auto i : req->carsNames)
+                    {
+                        transmitCarInfoMsg(i);
+                    }
+                }
             }
         }
     }
     root->findChild<QObject*>("busyIndicatorMain")->setProperty("visible", false);
     root->findChild<QObject*>("stackView")->setProperty("visible", true);
     delete req;
+}
+
+void Core::transmitCarInfoMsg(QString carsName)
+{
+
 }
 
 void Core::scheduler(RegistrationReq* req)
