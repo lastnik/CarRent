@@ -47,7 +47,12 @@ int main(int argc, char *argv[])
     QObject::connect( car.get(), SIGNAL(confirmDocs(std::vector<std::pair<QString, QString>>))
                     , core.get(), SLOT(confirmDocs(std::vector<std::pair<QString, QString>>)));
 
-    QObject::connect(core.get(), SIGNAL(transmitMsg(IMsg*)), net.get(), SLOT(transmit(IMsg*)));
+    QObject::connect( core.get(), SIGNAL(addCar(CarParam)), cars.get(), SLOT(addParam(CarParam)));
+    QObject::connect( core.get(), SIGNAL(clearCar()), cars.get(), SLOT(clear()));
+    QObject::connect( cars.get(), SIGNAL(waitingConfirm()), core.get(), SIGNAL(waitingConfirm()));
+    QObject::connect( core.get(), SIGNAL(transmitMsg(IMsg*)), net.get(), SLOT(transmit(IMsg*)));
+    QObject::connect( cars.get(), SIGNAL(rentalMsg(QString, QString, double)), core.get(), SLOT(rentalMsg(QString, QString, double)));
+
     //application login
     const QUrl urlLogin(QStringLiteral("qrc:/LoginPage.qml"));
     QQmlContext* context = engine.rootContext();
@@ -71,6 +76,7 @@ int main(int argc, char *argv[])
     QObject::connect(root->findChild<QObject*>("registration"), SIGNAL(clicked()),log.get(), SLOT(registration()));
     root = engine.rootObjects()[1];
     core->setRoot(root);
+    cars->setRoot(root);
     root->setProperty("visible", false);
 
     LoginMsg msg;
@@ -91,7 +97,9 @@ int main(int argc, char *argv[])
     QObject::connect(root, SIGNAL(attachImageCar(int, QString)), car.get(), SLOT(setDocFile(int, QString)));
 
     QObject::connect(root, SIGNAL(confirmPerson()), person.get(), SLOT(confirm()));
-    QObject::connect(root, SIGNAL(confirmCar()), car.get()   , SLOT(confirmCar()));
+    QObject::connect(root, SIGNAL(confirmCar()), car.get(), SLOT(confirmCar()));
+
+    QObject::connect(root, SIGNAL(confirmRental()), cars.get(), SLOT(confirmRental()));
 
     QObject::connect(root, SIGNAL(carView(int)), cars.get(), SLOT(carView(int)));
     return app.exec();

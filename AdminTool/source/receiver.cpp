@@ -13,7 +13,7 @@ IReq* FileReceiver::receive(QString reqName,  std::function<IReq*(QJsonDocument)
     auto list = dir.entryList(QStringList("*"), QDir::Files);
     for(auto i : list)
     {
-        if( i.toStdString().find("Admin.json") != std::string::npos &&
+        if( i.toStdString().find("Admin") != std::string::npos &&
             i.toStdString().find(reqName.toStdString()) != std::string::npos)
         {
             QFile letter(wayReq + ("/" + i));
@@ -37,7 +37,7 @@ IMsg* FileReceiver::receive(QString msgName,  std::function<IMsg*(QJsonDocument)
     auto list = dir.entryList(QStringList("*"), QDir::Files);
     for(auto i : list)
     {
-        if( i.toStdString().find("Admin.json") != std::string::npos &&
+        if( i.toStdString().find("Admin") != std::string::npos &&
             i.toStdString().find(msgName.toStdString()) != std::string::npos)
         {
             QFile letter(wayMsg + ("/" + i));

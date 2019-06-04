@@ -426,10 +426,23 @@ ApplicationWindow {
             anchors.left: customButton.horizontalCenter
             anchors.leftMargin: 10
             text: qsTr("Correct")
-            position: 0.0
+            position: 1.0
             onClicked:
             {
-                    carRegistration.bitmap = -carRegistration.bitmap
+                    if(position === 0.0)
+                    {
+                        if(carRegistration.bitmap > 0)
+                        {
+                            carRegistration.bitmap = -carRegistration.bitmap
+                        }
+                    }else
+                    {
+                        if(carRegistration.bitmap < 0)
+                        {
+                            carRegistration.bitmap = -carRegistration.bitmap
+                        }
+                    }
+
             }
         }
         ItemDelegate{

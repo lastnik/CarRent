@@ -33,7 +33,17 @@ public:
     virtual QJsonObject toJsonObject() override;
 
 public: //fields
-
+    QString                                  login;
+    QString                                  carName;
+    bool                                     isCar;
+    std::vector<std::pair<QString, QString>> documents;
+    QString                                  carBrend;
+    QString                                  carModel;
+    QString                                  carColor;
+    QString                                  carNumber;
+    QString                                  carOwner;
+    QString                                  carState;
+    int                                      year;
 };
 
 IReq* toCarInfoReqStruct(QJsonDocument);

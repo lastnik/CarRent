@@ -43,10 +43,12 @@ Page {
         {
             width: parent.width
             height: parent.height
+
             model: carModel
             delegate: Rectangle
             {
-                anchors.fill: parent
+                height: swipeView.height / 8
+                width: swipeView.width
                 color: "transparent"
                 ItemDelegate
                 {
@@ -68,6 +70,41 @@ Page {
                             color: "whitesmoke"
                             font.pointSize: 10
                         }
+                    }
+                    onClicked:
+                    {
+                        window.carView(model.index)
+                    }
+                }
+                ItemDelegate
+                {
+                    anchors.fill: parent
+                    width: parent.width
+                    height: lineCarName.height
+                    visible: (model.isLast)? false : true
+                    Label
+                    {
+                        id: carName
+                        width: parent.width / 4
+                        anchors.left: parent.left
+                        anchors.leftMargin: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: (model.carConfirm) ? qsTr("Car confirms :") : qsTr("Car doesn't confirm :")
+                        color: "papayawhip"
+                        horizontalAlignment : TextInput.AlignHCenter
+                        verticalAlignment : TextInput.AlignVCenter
+                    }
+                    TextField
+                    {
+                        id: lineCarName
+                        anchors.verticalCenter: carName.verticalCenter
+                        anchors.left: carName.right
+                        width: parent.width / 2
+                        placeholderText: qsTr("%1").arg(model.carName)
+                        placeholderTextColor: "papayawhip"
+                        horizontalAlignment : TextInput.AlignHCenter
+                        verticalAlignment : TextInput.AlignVCenter
+                        enabled: false
                     }
                     onClicked:
                     {

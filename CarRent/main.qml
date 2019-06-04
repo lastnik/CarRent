@@ -11,9 +11,24 @@ ApplicationWindow {
     width: 640
     height: 640
     title: qsTr("Stack")
+
+    property string _carOwner: ""
+    property string _carName: ""
+    property string _carBrend: ""
+    property string _carModel: ""
+    property string _carColor: ""
+    property string _carNumber: ""
+    property string _carPics: ""
+    property bool   _carConfirm: false
+    property string _login: ""
+    property int    _year: 0
+    property real   _cost: 0
+    property bool   _visFrame     : true
+    property bool   _visRental    : false
     signal attachImage(int docID, string name)
     signal attachImageCar(int docID, string name)
     signal confirmPerson()
+    signal confirmRental()
     signal confirmCar()
     signal pop()
     signal carView(int id)
@@ -39,6 +54,7 @@ ApplicationWindow {
         }
         ItemDelegate {
             id : from
+            objectName: "from"
             property bool isMe : false
             property date fromDate: new Date()
             text: fromDate.toLocaleDateString("mm-dd-yyyy")
@@ -63,6 +79,7 @@ ApplicationWindow {
         }
         ItemDelegate {
             id : to
+            objectName: "to"
             property date toDate: new Date()
             property bool isMe : false
             text: toDate.toLocaleDateString("mm-dd-yyyy")
@@ -469,7 +486,14 @@ ApplicationWindow {
             note.visible = true
         }
     }
-
+    Connections
+    {
+        target: core
+        onPop:
+        {
+            stackView.pop();
+        }
+    }
     Connections
     {
         target: personModel
@@ -493,6 +517,14 @@ ApplicationWindow {
         onCarRegistrationPage:
         {
             stackView.push("qrc:/pages/pages/AddCarPage.qml")
+        }
+    }
+    Connections
+    {
+        target: carModel
+        onCarPage:
+        {
+            stackView.push("qrc:/pages/pages/CarPage.qml");
         }
     }
 }

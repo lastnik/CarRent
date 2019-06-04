@@ -50,6 +50,11 @@ void Core::receiveReq(IReq* req)
         scheduler(reinterpret_cast<RegistrationCarReq*>(req));
         return;
     }
+    if(typeid (*req).name() == typeid (CarInfoReq).name())
+    {
+        scheduler(reinterpret_cast<CarInfoReq*>(req));
+        return;
+    }
 }
 
 void Core::scheduler(AccessReq* req)
@@ -84,6 +89,7 @@ void Core::scheduler(AccessReq* req)
                 root->findChild<QObject*>("myCars")->setProperty("visible", true);
                 if(req->hasCars)
                 {
+                    emit clearCar();
                     for(auto i : req->carsNames)
                     {
                         transmitCarInfoMsg(i);
@@ -99,7 +105,10 @@ void Core::scheduler(AccessReq* req)
 
 void Core::transmitCarInfoMsg(QString carsName)
 {
-
+    CarInfoMsg* msg = new CarInfoMsg();
+    msg->login = login;
+    msg->carName = carsName;
+    emit transmitMsg(msg);
 }
 
 void Core::scheduler(RegistrationReq* req)
@@ -128,6 +137,25 @@ void Core::scheduler(RegistrationCarReq* req)
     root->findChild<QObject*>("successReg")->setProperty("visible", true);
     delete req;
     accessInfo();
+}
+
+void Core::scheduler(CarInfoReq *req)
+{
+    //TODO: add a few functional
+    CarParam param;
+    param.isLast     = false;
+    param.carName    = req->carName;
+    param.carPics    = req->documents[0].second;
+    param.carOwner   = req->carOwner;
+    param.carBrend   = req->carBrend;
+    param.carModel   = req->carModel;
+    param.carColor   = req->carColor;
+    param.carNumber  = req->carNumber;
+    param.carConfirm = req->isCar;
+    param.year       = req->year;
+    param.carState   = req->carState;
+    delete req;
+    emit addCar(param);
 }
 
 void Core::setRoot(QObject *_root)
@@ -201,12 +229,29 @@ void Core::confirmDocs(std::vector<std::pair<QString, QString>> docs)
         param.carPics = msg->documents.back().second;
         param.carNumber = msg->carNumber;
         param.carOwner  = msg->login;
+        param.carBrend  = msg->carBrend;
+        param.carModel  = msg->carModel;
+        param.carColor  = msg->carColor;
         param.carConfirm  = false;
         param.isLast  = false;
+        param.carState  = "none";
+        param.year    = msg->year;
         emit addCar(param);
         emit transmitMsg(msg);
         emit waitingConfirm();
 
         emit pop();
     }
+}
+void Core::rentalMsg(QString _login, QString name, double cost)
+{
+    if(_login != login) return;
+    ConfirmRentalMsg* msg = new ConfirmRentalMsg();
+    msg->login = login;
+    msg->cost = cost;
+    msg->carName = name;
+    QString format = "mm-dd-yyyy";
+    msg->from = root->findChild<QObject*>("from")->property("fromDate").toDate().toString(format);
+    msg->to   = root->findChild<QObject*>("to")->property("toDate").toDate().toString(format);
+    transmitMsg(msg);
 }

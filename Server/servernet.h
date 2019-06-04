@@ -10,6 +10,7 @@
 #include "accessmsg.h"
 #include "registrationmsg.h"
 #include "registrationcarmsg.h"
+#include "carinfomsg.h"
 #include <functional>
 #include <map>
 #include <vector>
@@ -39,6 +40,7 @@ private:
     void schedulerReq(RegistrationReq*);
     void schedulerReq(RegistrationCarMsg*);
     void schedulerReq(RegistrationCarReq*);
+    void schedulerReq(CarInfoMsg*);
 private:
     std::unique_ptr<server::ITransmiter> transmiter;
     std::unique_ptr<server::IReceiver>   receiver;

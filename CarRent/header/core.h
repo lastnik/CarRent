@@ -7,7 +7,8 @@
 #include "registrationcarmsg.h"
 #include "accessmsg.h"
 #include "carmodel.h"
-
+#include "carinfomsg.h"
+#include "confirmrentalmsg.h"
 class Core : public QObject
 {
     Q_OBJECT
@@ -23,10 +24,12 @@ signals:
     void add(int id, QString name, bool vis);
     void pop();
     void clear();
+    void clearCar();
     void setCars(std::vector<CarParam>);
     void addCar(CarParam);
     void error(int errorCode);
 public slots:
+    void rentalMsg(QString, QString, double);
     void receiveReq(IReq*);
     void accessInfo();
     void start(LoginReq*);
@@ -36,6 +39,7 @@ private:
     void scheduler(AccessReq* req);
     void scheduler(RegistrationReq* req);
     void scheduler(RegistrationCarReq* req);
+    void scheduler(CarInfoReq*         req);
     QObject *root = nullptr;
     QString         login;
 };

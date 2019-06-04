@@ -32,6 +32,9 @@ ServerNet::ServerNet(QObject *parent) : QObject(parent)
     msgNum.push_back("RegistrationCarMsg");
     converterMsg["RegistrationCarMsg"] = toRegistrationCarMsgStruct;
 
+    msgNum.push_back("CarInfoMsg");
+    converterMsg["CarInfoMsg"] = toCarInfoMsgStruct;
+
     //registration req
     reqNum.push_back("RegistrationReq");
     converterReq["RegistrationReq"] = toRegistrationReqStruct;
@@ -117,6 +120,11 @@ void ServerNet::scheduler(IMsg* msg)
     if(typeid (*msg).name() == typeid (RegistrationCarMsg).name())
     {
         schedulerReq(reinterpret_cast<RegistrationCarMsg*>(msg));
+        return;
+    }
+    if(typeid (*msg).name() == typeid (CarInfoMsg).name())
+    {
+        schedulerReq(reinterpret_cast<CarInfoMsg*>(msg));
         return;
     }
 }
@@ -517,6 +525,7 @@ void ServerNet::schedulerReq(RegistrationCarMsg* msg)
             {"CarNumber", msg->carNumber},
             {"CarName",   msg->carBrend + " " + msg->carModel + " " + msg->carNumber},
             {"Year",      msg->year},
+            {"State",     "none"},
             {"ConfirmCar",false},
             {"Documents", arr},
         };
@@ -583,6 +592,7 @@ void ServerNet::schedulerReq(RegistrationCarReq* req)
                                 {"CarNumber",  i.toObject().value("CarNumber").toString()},
                                 {"CarName",    i.toObject().value("CarName").toString()},
                                 {"Year",       i.toObject().value("Year").toInt()},
+                                {"State",      i.toObject().value("State").toString()},
                                 {"ConfirmCar", true},
                                 {"Documents",  arrnew},
                             };
@@ -637,7 +647,7 @@ void ServerNet::schedulerReq(RegistrationCarReq* req)
                     auto arr = i.toObject().value("CarNames").toArray();
                     arr.push_back(req->carName);
                     obj.insert("CarNames", arr);
-                    obj.insert("Documents", i.toObject().value("Documents"));
+                    obj.insert("PersonalDocuments", i.toObject().value("PersonalDocuments"));
                     correct.push_back(obj);
                     emit transmitReq(req);
                 }else
@@ -655,6 +665,51 @@ void ServerNet::schedulerReq(RegistrationCarReq* req)
             data1.close();
         }
     }
+}
+void ServerNet::schedulerReq(CarInfoMsg *msg)
+{
+    qDebug() << "Server: confirm info about car : " << msg->carName << " for user: " << msg->login;
+    CarInfoReq* req = new CarInfoReq();
+    req->login = msg->login;
+    req->carName = msg->carName;
+    QFile data(wayData + ("/" + QString("Cars") + ".json"));
+    if(data.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        auto val = data.readAll();
+        data.close();
+        QJsonDocument doc = QJsonDocument::fromJson(val);
+        auto array =  doc.object().value("Car").toArray();
+        QJsonArray correct;
+        for(auto i : array)
+        {
+            if(i.toObject().value("CarName").toString() == req->carName)
+            {
+                QJsonArray arr = i.toObject().value("Documents").toArray();
+                req->carBrend = i.toObject().value("CarBrend").toString();
+                req->carModel = i.toObject().value("CarModel").toString();
+                req->carColor = i.toObject().value("CarColor").toString();
+                req->carOwner = i.toObject().value("Login").toString();
+                req->carNumber = i.toObject().value("CarNumber").toString();
+                req->year = i.toObject().value("Year").toInt();
+                req->isCar = i.toObject().value("ConfirmCar").toBool();
+                req->carState = i.toObject().value("State").toString();
+                req->receiverName = req->login;
+                for(auto j : arr)
+                {
+                    if(j.toObject().value("DocumentsName").toString() == "Photo of car")
+                    {
+                        req->documents.push_back(std::make_pair(j.toObject().value("DocumentsName").toString(),
+                                                                j.toObject().value("DocumentsFileName").toString()));
+                        auto a = QString(PATH) + "/data/pics/" + j.toObject().value("DocumentsFileName").toString();
+                        auto b = QString(CLIENTPATH) + "/cache/" + j.toObject().value("DocumentsFileName").toString();
+                        QFile::copy(a,b);
+                    }
+                }
+                break;
+            }
+        }
+    }
+    emit transmitReq(req);
 }
 void ServerNet::transmit(IReq* req)
 {

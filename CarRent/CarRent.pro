@@ -32,8 +32,9 @@ HEADERS += \
     $$PWD/model/header/documentsmodel.h \
     $$PWD/header/msg/accessmsg.h \
     $$PWD/model/header/carmodel.h \
-    header/msg/carinfomsg.h \
-    header/msg/registrationcarmsg.h
+    $$PWD/header/msg/carinfomsg.h \
+    $$PWD/header/msg/registrationcarmsg.h \
+    header/msg/confirmrentalmsg.h
 
 
 
@@ -48,8 +49,9 @@ SOURCES += \
         registrationmsg.cpp \
         receiver.cpp \
         loginmsg.cpp \
-        source/carinfomsg.cpp \
-        source/registrationcarmsg.cpp \
+        carinfomsg.cpp \
+        registrationcarmsg.cpp \
+        source/confirmrentalmsg.cpp \
         transmiter.cpp \
         login.cpp \
         main.cpp

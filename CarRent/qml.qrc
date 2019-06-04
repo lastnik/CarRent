@@ -11,6 +11,7 @@
         <file>pages/Page2Form.qml</file>
         <file>pages/WaitingPage.qml</file>
         <file>pages/AddCarPage.qml</file>
+        <file>pages/CarPage.qml</file>
     </qresource>
     <qresource prefix="/source">
         <file>pics/leftArrow.png</file>

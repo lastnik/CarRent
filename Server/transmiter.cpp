@@ -12,9 +12,9 @@ extern QString wayMsg;
 
 void FileTransmiter::transmit(IReq* req)
 {
-    QFile letter(wayReq + ("/" + req->reqName+ req->receiverName + ".json"));
-    letter.open(QIODevice::WriteOnly | QIODevice::Text);
     auto letterReq = req->toJsonObject();
+    QFile letter(wayReq + ("/" + req->reqName+ req->receiverName + QDateTime::currentDateTime().toString("ddMMhhmmsszzz") + ".json"));
+    letter.open(QIODevice::WriteOnly | QIODevice::Text);
     QJsonDocument doc(letterReq);
     auto val = doc.toJson();
     letter.write(val);
@@ -24,9 +24,9 @@ void FileTransmiter::transmit(IReq* req)
 
 void FileTransmiter::transmit(IMsg* msg)
 {
+    auto letterMsg = msg->toJsonObject();
     QFile letter(wayMsg + ("/" + msg->msgName + QDateTime::currentDateTime().toString("ddMMhhmmsszzz") + "Admin.json"));
     letter.open(QIODevice::WriteOnly | QIODevice::Text);
-    auto letterMsg = msg->toJsonObject();
     QJsonDocument doc(letterMsg);
     auto val = doc.toJson();
     letter.write(val);
