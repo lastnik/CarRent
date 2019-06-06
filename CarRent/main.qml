@@ -22,9 +22,16 @@ ApplicationWindow {
     property bool   _carConfirm: false
     property string _login: ""
     property int    _year: 0
-    property real   _cost: 0
+    property real   _cost: 100.0
+    property real   _carCost: 0.0
     property bool   _visFrame     : true
     property bool   _visRental    : false
+    property string _carFrom: ""
+    property string _carTo: ""
+    property bool  _buttonVisible: false
+    property bool  _multiplyChatWindow: false
+    property string _carRentUser: ""
+
     signal attachImage(int docID, string name)
     signal attachImageCar(int docID, string name)
     signal confirmPerson()
@@ -32,6 +39,12 @@ ApplicationWindow {
     signal confirmCar()
     signal pop()
     signal carView(int id)
+    signal rentalView(int id)
+    signal updateData()
+    signal rentalRespond(string carOwner, string carName)
+    signal atemptRespond(bool is);
+    signal chatPush(string text, string carName);
+    signal setChatN(int id);
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
         ToolButton {
@@ -72,8 +85,12 @@ ApplicationWindow {
                 onNewDate :
                 {
                     if(from.isMe)
-                    from.fromDate = date
+                    {
+                        from.fromDate = date
+                        window.updateData()
+                    }
                     from.isMe = false
+
                 }
             }
         }
@@ -97,7 +114,10 @@ ApplicationWindow {
                 onNewDate :
                 {
                     if(to.isMe)
-                    to.toDate = date
+                    {
+                        to.toDate = date
+                        window.updateData();
+                    }
                     to.isMe = false
                 }
             }
@@ -282,7 +302,7 @@ ApplicationWindow {
     StackView {
         id: stackView
         objectName: "stackView"
-        initialItem: "qrc:/pages/pages/ListPage.ui.qml"
+        initialItem: "qrc:/pages/pages/ListPage.qml"
         anchors.fill: parent
 
         MyBusyIndicator {
@@ -432,6 +452,132 @@ ApplicationWindow {
             }
         }
     }
+    Dialog
+    {
+        visible: false
+        anchors.centerIn: parent
+        id: successRegRentals
+        objectName: "successRegRentals"
+        width : window.width * 0.7
+        height : window.height / 4
+        Text
+        {
+            id: successRegRentals1
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 10
+            text: qsTr("We have successfully registered your rental ad")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment  : Text.AlignVCenter
+            color: "whitesmoke"
+            font.pointSize: 10
+        }
+        Text
+        {
+            id: successRegRentals2
+            objectName: "successRegRentals2"
+            anchors.top: successRegRentals1.bottom
+            anchors.horizontalCenter: successRegRentals1.horizontalCenter
+            text: qsTr("for you car.")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment  : Text.AlignVCenter
+            color: "whitesmoke"
+            font.pointSize: 10
+            anchors.topMargin: 10
+        }
+        Button
+        {
+            anchors.top: successRegRentals2.bottom
+            anchors.horizontalCenter: successRegRentals2.horizontalCenter
+            anchors.topMargin: 10
+            Text {
+                anchors.centerIn: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment  : Text.AlignVCenter
+                color: "whitesmoke"
+                font.pointSize: 10
+                text: qsTr("Okey!")
+            }
+            onClicked:
+            {
+                successRegRentals.close()
+            }
+        }
+    }
+    Dialog
+    {
+        visible: false
+        anchors.centerIn: parent
+        id: respondeRentals
+        objectName: "respondeRentals"
+        width : window.width * 0.7
+        height : window.height / 4
+        Text
+        {
+            id: respondeRentals1
+            objectName: "respondeRentals1"
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 10
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment  : Text.AlignVCenter
+            color: "whitesmoke"
+            font.pointSize: 10
+        }
+        Text
+        {
+            id: respondeRentals2
+            objectName: "respondeRentals2"
+            anchors.top: respondeRentals1.bottom
+            anchors.horizontalCenter: respondeRentals1.horizontalCenter
+            text: qsTr("for you car.")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment  : Text.AlignVCenter
+            color: "whitesmoke"
+            font.pointSize: 10
+            anchors.topMargin: 10
+        }
+        Button
+        {
+            objectName: "respondeRentalsButton1"
+            anchors.top: respondeRentals2.bottom
+            anchors.left: respondeRentals2.left
+            anchors.topMargin: 10
+            Text {
+                anchors.centerIn: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment  : Text.AlignVCenter
+                color: "whitesmoke"
+                font.pointSize: 10
+                text: qsTr("Okey!")
+            }
+            onClicked:
+            {
+                respondeRentals.close()
+                window.atemptRespond(true)
+            }
+        }
+        Button
+        {
+            objectName: "respondeRentalsButton2"
+            anchors.top: respondeRentals2.bottom
+            anchors.right: respondeRentals2.right
+            anchors.topMargin: 10
+            Text {
+                anchors.centerIn: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment  : Text.AlignVCenter
+                color: "whitesmoke"
+                font.pointSize: 10
+                text: qsTr("NO!")
+            }
+            onClicked:
+            {
+                respondeRentals.close()
+                window.atemptRespond(false)
+            }
+        }
+    }
     ListModel {
         id: documentsFirstly
     }
@@ -523,6 +669,14 @@ ApplicationWindow {
     {
         target: carModel
         onCarPage:
+        {
+            stackView.push("qrc:/pages/pages/CarPage.qml");
+        }
+    }
+    Connections
+    {
+        target: core
+        onSeeCarPage:
         {
             stackView.push("qrc:/pages/pages/CarPage.qml");
         }

@@ -22,6 +22,15 @@ struct CarParam
     int     year   = 0;
     QString carState = "none";
 };
+
+struct CarRentalAd
+{
+    QString carName   = "";
+    QString from   = "";
+    QString to   = "";
+    double cost   = 100.0;
+};
+
 class CarModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -47,6 +56,7 @@ public:
     virtual int rowCount(const QModelIndex &parent) const;
 public slots:
     void addParam(CarParam param);
+    void addCarRentalAd(CarRentalAd);
     void setParams(std::vector<CarParam> params);
     void clear();
     void carView(int);
@@ -55,10 +65,12 @@ signals:
     void carRegistrationPage();
     void carPage();
     void waitingConfirm();
+    void chatUpdate(QString carName, QString carOwner);
     void rentalMsg(QString, QString, double);
 private:
     void push_back();
     std::vector<CarParam> carsParam;
+    std::vector<CarRentalAd> carsRentalAd;
     QObject*    root;
 };
 

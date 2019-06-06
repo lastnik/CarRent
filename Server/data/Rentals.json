@@ -1,0 +1,20 @@
+{
+    "Rental": [
+        {
+            "CarName": "Kia Rio o777oo 197 Rus",
+            "CarOwner": "12345",
+            "Cost": 241,
+            "From": "06-07-2019",
+            "RentUser": "",
+            "To": "06-10-2019"
+        },
+        {
+            "CarName": "Tesla 3 y111yy 197 Rus",
+            "CarOwner": "12345",
+            "Cost": 500,
+            "From": "06-06-2019",
+            "RentUser": "",
+            "To": "06-08-2019"
+        }
+    ]
+}

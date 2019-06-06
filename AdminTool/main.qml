@@ -426,7 +426,7 @@ ApplicationWindow {
             anchors.left: customButton.horizontalCenter
             anchors.leftMargin: 10
             text: qsTr("Correct")
-            position: 1.0
+            position: 0.0
             onClicked:
             {
                     if(position === 0.0)
@@ -468,6 +468,7 @@ ApplicationWindow {
             }
             onClicked:
             {
+                switchMyCarInfo.position = 0.0
                 carRegistration.visible = false;
                 window.sendResponce(carRegistration.indexReq, carRegistration.totalReq, carRegistration.bitmap);
             }

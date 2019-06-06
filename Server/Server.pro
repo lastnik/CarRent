@@ -27,7 +27,14 @@ SOURCES += \
         $$PWD/../CarRent/source/registrationmsg.cpp \
         $$PWD/../CarRent/source/registrationcarmsg.cpp \
         $$PWD/../CarRent/source/confirmrentalmsg.cpp \
+        $$PWD/../CarRent/source/rentalinfomsg.cpp \
+        $$PWD/../CarRent/source/rentallistinfomsg.cpp \
+        $$PWD/../CarRent/source/rentalrespondmsg.cpp \
+        $$PWD/../CarRent/source/chatinfomsg.cpp \
+        $$PWD/../CarRent/source/chatslistmsg.cpp \
+        $$PWD/../CarRent/source/newmsgchatmsg.cpp \
         $$PWD/../CarRent/source/carinfomsg.cpp
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -43,4 +50,10 @@ HEADERS += \
     $$PWD/../CarRent/header/msg/registrationcarmsg.h \
     $$PWD/../CarRent/header/msg/confirmrentalmsg.h \
     $$PWD/../CarRent/header/msg/carinfomsg.h \
+    $$PWD/../CarRent/header/msg/rentalinfomsg.h \
+    $$PWD/../CarRent/header/msg/rentallistinfomsg.h \
+    $$PWD/../CarRent/header/msg/rentalrespondmsg.h \
+    $$PWD/../CarRent/header/msg/chatslistmsg.h \
+    $$PWD/../CarRent/header/msg/chatinfomsg.h \
+    $$PWD/../CarRent/header/msg/newmsgchatmsg.h \
     $$PWD/../CarRent/header/msg/imsg.h

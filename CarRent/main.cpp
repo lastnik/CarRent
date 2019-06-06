@@ -6,6 +6,9 @@
 #include "loginmsg.h"
 #include "clientnet.h"
 #include "documentsmodel.h"
+#include "rentaladmodel.h"
+#include "chatlistmodel.h"
+#include "chatmodel.h"
 #include "core.h"
 #include <memory>
 using namespace std;
@@ -34,6 +37,10 @@ int main(int argc, char *argv[])
     unique_ptr<DocumentsModel> car = std::make_unique<DocumentsModel>(docCar);
     unique_ptr<CarModel>       cars   = std::make_unique<CarModel>();
 
+    unique_ptr<RentalAdModel>  rentals = std::make_unique<RentalAdModel>();
+    unique_ptr<ChatModel> chat = std::make_unique<ChatModel>();
+    unique_ptr<ChatListModel> listchat = std::make_unique<ChatListModel>();
+
 
 
     QObject::connect(log.get(), SIGNAL(tryLogin(IMsg*)), net.get(), SLOT(transmit(IMsg*)));
@@ -47,11 +54,27 @@ int main(int argc, char *argv[])
     QObject::connect( car.get(), SIGNAL(confirmDocs(std::vector<std::pair<QString, QString>>))
                     , core.get(), SLOT(confirmDocs(std::vector<std::pair<QString, QString>>)));
 
+    QObject::connect(core.get(), SIGNAL(setRentalAd(std::vector<RentalAd>)), rentals.get(), SLOT(setParams(std::vector<RentalAd>)));
+
     QObject::connect( core.get(), SIGNAL(addCar(CarParam)), cars.get(), SLOT(addParam(CarParam)));
+    QObject::connect( core.get(), SIGNAL(addCarRentalAd(CarRentalAd)), cars.get(), SLOT(addCarRentalAd(CarRentalAd)));
     QObject::connect( core.get(), SIGNAL(clearCar()), cars.get(), SLOT(clear()));
     QObject::connect( cars.get(), SIGNAL(waitingConfirm()), core.get(), SIGNAL(waitingConfirm()));
     QObject::connect( core.get(), SIGNAL(transmitMsg(IMsg*)), net.get(), SLOT(transmit(IMsg*)));
     QObject::connect( cars.get(), SIGNAL(rentalMsg(QString, QString, double)), core.get(), SLOT(rentalMsg(QString, QString, double)));
+    QObject::connect( rentals.get(), SIGNAL(see(QString)), core.get(), SLOT(see(QString)));
+    QObject::connect( cars.get(), SIGNAL(chatUpdate(QString, QString)), core.get(), SLOT(chatUpdateList(QString, QString)));
+
+    QObject::connect( listchat.get(), SIGNAL(addMsg(Message)), chat.get(), SLOT(addMsg(Message)));
+    QObject::connect( listchat.get(), SIGNAL(pushMsg(Message, QString)), core.get(), SLOT(pushMsg(Message, QString)));
+    QObject::connect( core.get(), SIGNAL(loadMsg(Message)), listchat.get(), SLOT(loadMsg(Message)));
+    QObject::connect( core.get(), SIGNAL(addChatInfo(QString,QString)), listchat.get(), SLOT(addChatInfo(QString,QString)));
+    QObject::connect( core.get(), SIGNAL(zeroChat()), listchat.get(), SLOT(setFirst()));
+    QObject::connect( core.get(), SIGNAL(clearListChat()), listchat.get(), SLOT(clear()));
+    QObject::connect( core.get(), SIGNAL(setChat(QString,QString,std::vector<Message>)), listchat.get(), SLOT(setChat(QString,QString,std::vector<Message>)));
+    QObject::connect( listchat.get(), SIGNAL(clearChat()), chat.get(), SLOT(clear()));
+    QObject::connect( listchat.get(), SIGNAL(setMsgs(std::vector<Message>)), chat.get(), SLOT(setMsgs(std::vector<Message>)));
+
 
     //application login
     const QUrl urlLogin(QStringLiteral("qrc:/LoginPage.qml"));
@@ -66,6 +89,9 @@ int main(int argc, char *argv[])
     context->setContextProperty("carModel", cars.get());
     context->setContextProperty("carDocModel", car.get());
     context->setContextProperty("core", core.get());
+    context->setContextProperty("rentalModel", rentals.get());
+    context->setContextProperty("chat", chat.get());
+    context->setContextProperty("chatList", listchat.get());
 
     engine.load(url);
 
@@ -95,12 +121,15 @@ int main(int argc, char *argv[])
 
     QObject::connect(root, SIGNAL(attachImage(int, QString)), person.get(), SLOT(setDocFile(int, QString)));
     QObject::connect(root, SIGNAL(attachImageCar(int, QString)), car.get(), SLOT(setDocFile(int, QString)));
-
     QObject::connect(root, SIGNAL(confirmPerson()), person.get(), SLOT(confirm()));
     QObject::connect(root, SIGNAL(confirmCar()), car.get(), SLOT(confirmCar()));
-
     QObject::connect(root, SIGNAL(confirmRental()), cars.get(), SLOT(confirmRental()));
-
     QObject::connect(root, SIGNAL(carView(int)), cars.get(), SLOT(carView(int)));
+    QObject::connect(root, SIGNAL(updateData()), core.get(), SLOT(rentalListInfo()));
+    QObject::connect(root, SIGNAL(rentalView(int)), rentals.get(), SLOT(rentalView(int)));
+    QObject::connect(root, SIGNAL(rentalRespond(QString, QString)), core.get(), SLOT(rentalRespond(QString, QString)));
+    QObject::connect(root, SIGNAL(atemptRespond(bool)), core.get(), SLOT(atemptRespond(bool)));
+    QObject::connect(root, SIGNAL(chatPush(QString, QString)), listchat.get(), SLOT(confirmMsg(QString, QString)));
+    QObject::connect(root, SIGNAL(setChatN(int)), listchat.get(), SLOT(setActiveChat(int)));
     return app.exec();
 }

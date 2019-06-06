@@ -11,6 +11,13 @@
 #include "registrationmsg.h"
 #include "registrationcarmsg.h"
 #include "carinfomsg.h"
+#include "confirmrentalmsg.h"
+#include "rentalinfomsg.h"
+#include "rentallistinfomsg.h"
+#include "rentalrespondmsg.h"
+#include "chatinfomsg.h"
+#include "chatslistmsg.h"
+#include "newmsgchatmsg.h"
 #include <functional>
 #include <map>
 #include <vector>
@@ -41,6 +48,13 @@ private:
     void schedulerReq(RegistrationCarMsg*);
     void schedulerReq(RegistrationCarReq*);
     void schedulerReq(CarInfoMsg*);
+    void schedulerReq(ConfirmRentalMsg*);
+    void schedulerReq(RentalInfoMsg*);
+    void schedulerReq(RentalListInfoMsg*);
+    void schedulerReq(RentalRespondMsg*);
+    void schedulerReq(ChatListMsg*);
+    void schedulerReq(ChatInfoMsg*);
+    void schedulerReq(NewMsgChatMsg*);
 private:
     std::unique_ptr<server::ITransmiter> transmiter;
     std::unique_ptr<server::IReceiver>   receiver;

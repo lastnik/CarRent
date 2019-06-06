@@ -20,11 +20,11 @@ QJsonObject ConfirmRentalMsg::toJsonObject()
     return total;
 }
 
-IMsg* toCarInfoMsgStruct(QJsonDocument doc)
+IMsg* toConfirmRentalMsgStruct(QJsonDocument doc)
 {
     ConfirmRentalMsg* msg = new ConfirmRentalMsg();
-    msg->msgName = "CarInfoMsg";
-    auto content = doc.object().value("CarInfoMsg");
+    msg->msgName = "ConfirmRentalMsg";
+    auto content = doc.object().value("ConfirmRentalMsg");
     msg->login   = content.toObject().value("Login").toString();
     msg->carName   = content.toObject().value("CarName").toString();
     msg->cost   = content.toObject().value("Cost").toDouble();
@@ -52,11 +52,11 @@ QJsonObject ConfirmRentalReq::toJsonObject()
     return total;
 }
 
-IReq* toCarInfoReqStruct(QJsonDocument doc)
+IReq* toConfirmRentalReqStruct(QJsonDocument doc)
 {
     ConfirmRentalReq* req = new ConfirmRentalReq();
-    req->reqName = "CarInfoReq";
-    auto content = doc.object().value("CarInfoReq");
+    req->reqName = "ConfirmRentalReq";
+    auto content = doc.object().value("ConfirmRentalReq");
     req->login   = content.toObject().value("Login").toString();
     req->receiverName = req->login;
     req->carName      = content.toObject().value("CarName").toString();

@@ -1,4 +1,70 @@
 {
     "Car": [
+        {
+            "CarBrend": "Kia",
+            "CarColor": "Red",
+            "CarModel": "Rio",
+            "CarName": "Kia Rio o777oo 197 Rus",
+            "CarNumber": "o777oo 197 Rus",
+            "ConfirmCar": true,
+            "Documents": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Сertificate Kia Rio o777oo 197 Rus.png",
+                    "DocumentsName": "Сertificate"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "PTS Kia Rio o777oo 197 Rus.png",
+                    "DocumentsName": "PTS"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "OSAGO Kia Rio o777oo 197 Rus.png",
+                    "DocumentsName": "OSAGO"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Photo of car Kia Rio o777oo 197 Rus.png",
+                    "DocumentsName": "Photo of car"
+                }
+            ],
+            "Login": "12345",
+            "State": "free",
+            "Year": 2016
+        },
+        {
+            "CarBrend": "Tesla",
+            "CarColor": "white",
+            "CarModel": "3",
+            "CarName": "Tesla 3 y111yy 197 Rus",
+            "CarNumber": "y111yy 197 Rus",
+            "ConfirmCar": true,
+            "Documents": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Сertificate Tesla 3 y111yy 197 Rus.png",
+                    "DocumentsName": "Сertificate"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "PTS Tesla 3 y111yy 197 Rus.png",
+                    "DocumentsName": "PTS"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "OSAGO Tesla 3 y111yy 197 Rus.png",
+                    "DocumentsName": "OSAGO"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Photo of car Tesla 3 y111yy 197 Rus.png",
+                    "DocumentsName": "Photo of car"
+                }
+            ],
+            "Login": "12345",
+            "State": "free",
+            "Year": 2016
+        }
     ]
 }

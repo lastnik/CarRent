@@ -6,7 +6,7 @@
         <file>MyBusyIndicator.qml</file>
     </qresource>
     <qresource prefix="/pages">
-        <file>pages/ListPage.ui.qml</file>
+        <file>pages/ListPage.qml</file>
         <file>pages/Page1Form.qml</file>
         <file>pages/Page2Form.qml</file>
         <file>pages/WaitingPage.qml</file>

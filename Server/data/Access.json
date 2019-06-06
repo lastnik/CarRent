@@ -1,4 +1,63 @@
 {
     "User": [
+        {
+            "CarNames": [
+                "Kia Rio o777oo 197 Rus",
+                "Tesla 3 y111yy 197 Rus"
+            ],
+            "ConfirmPerson": true,
+            "HasCars": true,
+            "Login": "12345",
+            "PersonalDocuments": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Passport12345.png",
+                    "DocumentsName": "Passport"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Driver Licence12345.png",
+                    "DocumentsName": "Driver Licence"
+                }
+            ]
+        },
+        {
+            "CarNames": [
+            ],
+            "ConfirmPerson": true,
+            "HasCars": false,
+            "Login": "nikita",
+            "PersonalDocuments": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Passportnikita.png",
+                    "DocumentsName": "Passport"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Driver Licencenikita.png",
+                    "DocumentsName": "Driver Licence"
+                }
+            ]
+        },
+        {
+            "CarNames": [
+            ],
+            "ConfirmPerson": true,
+            "HasCars": false,
+            "Login": "Nastya",
+            "PersonalDocuments": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "PassportNastya.png",
+                    "DocumentsName": "Passport"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Driver LicenceNastya.png",
+                    "DocumentsName": "Driver Licence"
+                }
+            ]
+        }
     ]
 }

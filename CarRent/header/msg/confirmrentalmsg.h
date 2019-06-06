@@ -40,3 +40,5 @@ public: //fields
     QString carName;
     bool    result;
 };
+
+IReq* toConfirmRentalReqStruct(QJsonDocument);

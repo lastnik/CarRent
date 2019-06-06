@@ -6,10 +6,18 @@
 #include "registrationmsg.h"
 #include "registrationcarmsg.h"
 #include "carinfomsg.h"
+#include "confirmrentalmsg.h"
+#include "rentalinfomsg.h"
+#include "rentallistinfomsg.h"
+#include "rentalrespondmsg.h"
+#include "chatslistmsg.h"
+#include "chatinfomsg.h"
+#include "newmsgchatmsg.h"
+
 
 #include <memory>
 #include <QTimer>
-QString ClientNet::login;
+QString ClientNet::login = "____________________________________________";
 
 ClientNet::ClientNet(QObject *parent) : QObject(parent)
 {
@@ -31,6 +39,28 @@ ClientNet::ClientNet(QObject *parent) : QObject(parent)
 
    reqNum.push_back("CarInfoReq");
    converter["CarInfoReq"] = toCarInfoReqStruct;
+
+   reqNum.push_back("ConfirmRentalReq");
+   converter["ConfirmRentalReq"] = toConfirmRentalReqStruct;
+
+   reqNum.push_back("RentalInfoReq");
+   converter["RentalInfoReq"] = toRentalInfoReqStruct;
+
+   reqNum.push_back("RentalListInfoReq");
+   converter["RentalListInfoReq"] = toRentalListInfoReqStruct;
+
+   reqNum.push_back("RentalRespondReq");
+   converter["RentalRespondReq"] = toRentalRespondReqStruct;
+
+   reqNum.push_back("ChatListReq");
+   converter["ChatListReq"] = toChatListReqStruct;
+
+   reqNum.push_back("ChatInfoReq");
+   converter["ChatInfoReq"] = toChatInfoReqStruct;
+
+   reqNum.push_back("NewMsgChatReq");
+   converter["NewMsgChatReq"] = toNewMsgChatReqStruct;
+
 
    QTimer::singleShot(1000, this, SLOT(receive()));
 }

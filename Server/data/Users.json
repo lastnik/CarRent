@@ -1,4 +1,16 @@
 {
     "User": [
+        {
+            "Login": "12345",
+            "Password": "12345"
+        },
+        {
+            "Login": "nikita",
+            "Password": "nikita"
+        },
+        {
+            "Login": "Nastya",
+            "Password": "Nastya"
+        }
     ]
 }

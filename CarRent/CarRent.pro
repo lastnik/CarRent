@@ -34,7 +34,16 @@ HEADERS += \
     $$PWD/model/header/carmodel.h \
     $$PWD/header/msg/carinfomsg.h \
     $$PWD/header/msg/registrationcarmsg.h \
-    header/msg/confirmrentalmsg.h
+    $$PWD/header/msg/confirmrentalmsg.h \
+    $$PWD/header/msg/rentalinfomsg.h \
+    $$PWD/header/msg/rentallistinfomsg.h \
+    $$PWD/header/msg/rentalrespondmsg.h \
+    $$PWD/model/header/rentaladmodel.h \
+    $$PWD/header/msg/chatinfomsg.h \
+    $$PWD/header/msg/chatslistmsg.h \
+    $$PWD/model/header/chatmodel.h \
+    header/msg/newmsgchatmsg.h \
+    model/header/chatlistmodel.h
 
 
 
@@ -46,12 +55,21 @@ SOURCES += \
         documentsmodel.cpp \
         accessmsg.cpp \
         carmodel.cpp \
+        model/source/chatlistmodel.cpp \
+        model/source/chatmodel.cpp \
+        rentaladmodel.cpp \
         registrationmsg.cpp \
         receiver.cpp \
         loginmsg.cpp \
         carinfomsg.cpp \
         registrationcarmsg.cpp \
-        source/confirmrentalmsg.cpp \
+        confirmrentalmsg.cpp \
+        rentalinfomsg.cpp \
+        rentallistinfomsg.cpp \
+        rentalrespondmsg.cpp \
+        chatinfomsg.cpp \
+        chatslistmsg.cpp \
+        source/newmsgchatmsg.cpp \
         transmiter.cpp \
         login.cpp \
         main.cpp

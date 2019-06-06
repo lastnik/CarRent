@@ -1,0 +1,62 @@
+{
+    "Chats": [
+        {
+            "CarName": "Kia Rio o777oo 197 Rus",
+            "CarOwner": "12345",
+            "Chat": [
+                {
+                    "Name": "nikita",
+                    "Text": "Hi"
+                },
+                {
+                    "Name": "nikita",
+                    "Text": "How are you?"
+                },
+                {
+                    "Name": "nikita",
+                    "Text": "I'm okey)"
+                },
+                {
+                    "Name": "12345",
+                    "Text": "Good)"
+                },
+                {
+                    "Name": "12345",
+                    "Text": "are you online?"
+                },
+                {
+                    "Name": "nikita",
+                    "Text": "Yes)"
+                },
+                {
+                    "Name": "nikita",
+                    "Text": "Perfect)"
+                },
+                {
+                    "Name": "12345",
+                    "Text": "Only bug with last view("
+                },
+                {
+                    "Name": "nikita",
+                    "Text": "Hey)"
+                },
+                {
+                    "Name": "12345",
+                    "Text": "HI!"
+                }
+            ],
+            "UserName": "nikita"
+        },
+        {
+            "CarName": "Kia Rio o777oo 197 Rus",
+            "CarOwner": "12345",
+            "Chat": [
+                {
+                    "Name": "Nastya",
+                    "Text": "Hi!)"
+                }
+            ],
+            "UserName": "Nastya"
+        }
+    ]
+}

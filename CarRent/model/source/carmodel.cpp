@@ -82,6 +82,16 @@ void CarModel::carView(int id)
         emit carRegistrationPage();
     }else
     {
+        emit chatUpdate(carsParam[id].carName, carsParam[id].carOwner);
+        CarRentalAd ad;
+        for(auto& i : carsRentalAd)
+        {
+            if(i.carName == carsParam[id].carName)
+            {
+                ad = i;
+                break;
+            }
+        }
         if(carsParam[id].carConfirm)
         {
             root->setProperty("_carOwner",   carsParam[id].carOwner);
@@ -94,6 +104,11 @@ void CarModel::carView(int id)
             root->setProperty("_carConfirm", carsParam[id].carConfirm);
             root->setProperty("_login",      carsParam[id].login);
             root->setProperty("_year",       carsParam[id].year);
+            root->setProperty("_carCost",    ad.cost);
+            root->setProperty("_carFrom",    ad.from);
+            root->setProperty("_carTo",      ad.to);
+            root->setProperty("_buttonVisible", false);
+            root->setProperty("_multiplyChatWindow", true);
             if(carsParam[id].carState == "free")
             {
                  root->setProperty("_visFrame", true);
@@ -127,9 +142,17 @@ void CarModel::confirmRental()
     QString name = root->property("_carName").toString();
     QString login = root->property("_login").toString();
     double cost = root->property("_cost").toDouble();
-    if(login == name)
+    if(login == owner)
     {
         emit rentalMsg(login, name, cost);
+    }
+    for(auto& i : carsParam)
+    {
+        if(i.carName == name)
+        {
+            i.carState == "free";
+            break;
+        }
     }
 }
 
@@ -152,6 +175,24 @@ void CarModel::addParam(CarParam param)
     }
     endResetModel();
 }
+
+void CarModel::addCarRentalAd(CarRentalAd param)
+{
+    bool in = false;
+    for(auto& i : carsRentalAd)
+    {
+        if(i.carName == param.carName)
+        {
+            i = param;
+            in = true;
+        }
+    }
+    if(!in)
+    {
+        carsRentalAd.push_back(param);
+    }
+}
+
 
 void CarModel::clear()
 {
