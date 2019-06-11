@@ -11,6 +11,10 @@
         {
             "Login": "Nastya",
             "Password": "Nastya"
+        },
+        {
+            "Login": "Login",
+            "Password": "Login"
         }
     ]
 }

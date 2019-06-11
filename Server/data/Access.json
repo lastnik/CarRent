@@ -58,6 +58,25 @@
                     "DocumentsName": "Driver Licence"
                 }
             ]
+        },
+        {
+            "CarNames": [
+            ],
+            "ConfirmPerson": true,
+            "HasCars": false,
+            "Login": "Login",
+            "PersonalDocuments": [
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "PassportLogin.png",
+                    "DocumentsName": "Passport"
+                },
+                {
+                    "DocumentsConfirm": true,
+                    "DocumentsFileName": "Driver LicenceLogin.png",
+                    "DocumentsName": "Driver Licence"
+                }
+            ]
         }
     ]
 }
